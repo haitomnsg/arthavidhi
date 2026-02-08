@@ -4,12 +4,6 @@
 
 @section('content')
 <div class="space-y-6">
-    <!-- Welcome Section -->
-    <div class="bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-6 text-white">
-        <h1 class="text-2xl font-bold">Welcome back, {{ auth()->user()->name }}!</h1>
-        <p class="text-primary-100 mt-1">Here's what's happening with your business today.</p>
-    </div>
-
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
@@ -193,49 +187,6 @@
                 <p class="text-gray-500 dark:text-gray-400 text-center py-4">No expenses recorded</p>
                 @endforelse
             </div>
-        </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Quick Actions</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <a href="{{ route('bills.create') }}" class="flex flex-col items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
-                <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-plus text-white text-xl"></i>
-                </div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">New Bill</span>
-            </a>
-            <a href="{{ route('quotations.create') }}" class="flex flex-col items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
-                <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-file-alt text-white text-xl"></i>
-                </div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">New Quote</span>
-            </a>
-            <a href="{{ route('products.create') }}" class="flex flex-col items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
-                <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-box text-white text-xl"></i>
-                </div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Add Product</span>
-            </a>
-            <a href="{{ route('purchases.create') }}" class="flex flex-col items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors">
-                <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-shopping-cart text-white text-xl"></i>
-                </div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">New Purchase</span>
-            </a>
-            <a href="{{ route('expenses.create') }}" class="flex flex-col items-center p-4 bg-red-50 dark:bg-red-900/20 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors">
-                <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-wallet text-white text-xl"></i>
-                </div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Add Expense</span>
-            </a>
-            <a href="{{ route('reports.index') }}" class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                <div class="w-12 h-12 bg-gray-500 rounded-xl flex items-center justify-center mb-2">
-                    <i class="fas fa-chart-bar text-white text-xl"></i>
-                </div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Reports</span>
-            </a>
         </div>
     </div>
 </div>

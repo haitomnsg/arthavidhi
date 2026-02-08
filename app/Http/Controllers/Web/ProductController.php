@@ -89,9 +89,9 @@ class ProductController extends Controller
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
-        Product::create($validated);
+        $product = Product::create($validated);
 
-        return redirect()->route('products.index')
+        return redirect()->route('products.show', $product)
             ->with('success', 'Product created successfully.');
     }
 
@@ -164,7 +164,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('products.index')
+        return redirect()->route('products.show', $product)
             ->with('success', 'Product updated successfully.');
     }
 

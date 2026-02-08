@@ -34,7 +34,7 @@
             @if($quotation->status !== 'accepted')
             <form action="{{ route('quotations.convert', $quotation) }}" method="POST" class="inline">
                 @csrf
-                <button type="submit" class="px-4 py-2 bg-green-50 dark:bg-green-900/200 text-white rounded-lg hover:bg-green-600 transition-colors"
+                <button type="submit" class="px-4 py-2 bg-green-500 dark:bg-green-600 text-white rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors"
                         onclick="return confirm('Convert this quotation to a bill?')">
                     <i class="fas fa-exchange-alt mr-2"></i> Convert to Bill
                 </button>
@@ -226,7 +226,7 @@
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="status" value="sent">
-                        <button type="submit" class="w-full px-4 py-2 bg-blue-50 dark:bg-blue-900/200 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <button type="submit" class="w-full px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
                             <i class="fas fa-paper-plane mr-2"></i> Mark as Sent
                         </button>
                     </form>
@@ -238,7 +238,7 @@
                         @method('PUT')
                         <input type="hidden" name="status" value="accepted" x-ref="statusInput">
                         <button type="submit" @click="$refs.statusInput.value = 'accepted'" 
-                                class="w-full px-4 py-2 bg-green-50 dark:bg-green-900/200 text-white rounded-lg hover:bg-green-600 transition-colors">
+                                class="w-full px-4 py-2 bg-green-500 dark:bg-green-600 text-white rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors">
                             <i class="fas fa-check mr-2"></i> Mark as Accepted
                         </button>
                     </form>

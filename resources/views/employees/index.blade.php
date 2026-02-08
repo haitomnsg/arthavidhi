@@ -108,9 +108,14 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow">
             <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center space-x-4">
+                    @if($employee->photo)
+                    <img src="{{ asset('storage/' . $employee->photo) }}" alt="{{ $employee->name }}" 
+                         class="w-14 h-14 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
+                    @else
                     <div class="w-14 h-14 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
                         {{ strtoupper(substr($employee->name, 0, 1)) }}
                     </div>
+                    @endif
                     <div>
                         <h3 class="font-semibold text-gray-800 dark:text-white">{{ $employee->name }}</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400">{{ $employee->position }}</p>
@@ -134,7 +139,7 @@
                 </div>
                 <div class="flex items-center text-gray-600 dark:text-gray-400">
                     <i class="fas fa-building w-5 text-gray-400"></i>
-                    <span class="ml-2">{{ $employee->department ?? 'N/A' }}</span>
+                    <span class="ml-2">{{ $employee->departmentModel->name ?? ($employee->department ?? 'N/A') }}</span>
                 </div>
                 <div class="flex items-center text-gray-600 dark:text-gray-400">
                     <i class="fas fa-indian-rupee-sign w-5 text-gray-400"></i>

@@ -134,6 +134,7 @@
                     else if (href.includes('categor')) icon = 'fa-folder';
                     else if (href.includes('purchase')) icon = 'fa-shopping-cart';
                     else if (href.includes('expense')) icon = 'fa-wallet';
+                    else if (href.includes('salary') || href.includes('salaries')) icon = 'fa-money-check-alt';
                     else if (href.includes('employee')) icon = 'fa-users';
                     else if (href.includes('attendance')) icon = 'fa-calendar-check';
                     else if (href.includes('report')) icon = 'fa-chart-bar';
@@ -354,24 +355,24 @@
                     <span>Create Bill</span>
                 </a>
                 <a href="{{ route('bills.index') }}" 
-                   @click.prevent="openTab('{{ route('bills.index') }}', 'Find Bills', 'fa-file-invoice')"
+                   @click.prevent="openTab('{{ route('bills.index') }}', 'Find Bills', 'fa-list')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
                    :class="{ 'active': isTabActive('{{ route('bills.index') }}') }">
-                    <i class="fas fa-file-invoice w-5"></i>
+                    <i class="fas fa-list w-5"></i>
                     <span>Find Bills</span>
                 </a>
                 <a href="{{ route('quotations.create') }}" 
-                   @click.prevent="openTab('{{ route('quotations.create') }}', 'Create Quotation', 'fa-file-alt')"
+                   @click.prevent="openTab('{{ route('quotations.create') }}', 'Create Quotation', 'fa-plus-circle')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
                    :class="{ 'active': isTabActive('{{ route('quotations.create') }}') }">
-                    <i class="fas fa-file-alt w-5"></i>
+                    <i class="fas fa-plus-circle w-5"></i>
                     <span>Create Quotation</span>
                 </a>
                 <a href="{{ route('quotations.index') }}" 
-                   @click.prevent="openTab('{{ route('quotations.index') }}', 'Find Quotations', 'fa-search')"
+                   @click.prevent="openTab('{{ route('quotations.index') }}', 'Find Quotations', 'fa-list')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
                    :class="{ 'active': isTabActive('{{ route('quotations.index') }}') }">
-                    <i class="fas fa-search w-5"></i>
+                    <i class="fas fa-list w-5"></i>
                     <span>Find Quotations</span>
                 </a>
 
@@ -410,6 +411,13 @@
                     <i class="fas fa-wallet w-5"></i>
                     <span>Expenses</span>
                 </a>
+                <a href="{{ route('incomes.index') }}" 
+                   @click.prevent="openTab('{{ route('incomes.index') }}', 'Income', 'fa-hand-holding-usd')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('incomes.index') }}') }">
+                    <i class="fas fa-hand-holding-usd w-5"></i>
+                    <span>Income</span>
+                </a>
 
                 <div class="pt-4 pb-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">HR</p>
@@ -420,6 +428,34 @@
                    :class="{ 'active': isTabActive('{{ route('employees.index') }}') }">
                     <i class="fas fa-users w-5"></i>
                     <span>Employees</span>
+                </a>
+                <a href="{{ route('salaries.index') }}" 
+                   @click.prevent="openTab('{{ route('salaries.index') }}', 'Salaries', 'fa-money-check-alt')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('salaries.index') }}') }">
+                    <i class="fas fa-money-check-alt w-5"></i>
+                    <span>Salaries</span>
+                </a>
+                <a href="{{ route('departments.index') }}" 
+                   @click.prevent="openTab('{{ route('departments.index') }}', 'Departments', 'fa-building')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('departments.index') }}') }">
+                    <i class="fas fa-building w-5"></i>
+                    <span>Departments</span>
+                </a>
+                <a href="{{ route('shifts.index') }}" 
+                   @click.prevent="openTab('{{ route('shifts.index') }}', 'Shifts', 'fa-clock')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('shifts.index') }}') }">
+                    <i class="fas fa-clock w-5"></i>
+                    <span>Shifts</span>
+                </a>
+                <a href="{{ route('attendance.index') }}" 
+                   @click.prevent="openTab('{{ route('attendance.index') }}', 'Attendance', 'fa-calendar-check')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('attendance.index') }}') }">
+                    <i class="fas fa-calendar-check w-5"></i>
+                    <span>Attendance</span>
                 </a>
 
                 <div class="pt-4 pb-2">
@@ -503,6 +539,11 @@
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 <div class="flex items-center gap-4">
+                    <!-- Notification Bell -->
+                    <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
                     <!-- Dark Mode Toggle -->
                     <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode); document.querySelectorAll('iframe').forEach(f => { try { f.contentDocument.documentElement.classList.toggle('dark', darkMode) } catch(e){} })" 
                             class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">

@@ -57,11 +57,11 @@
                         @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">GST Number (Optional)</label>
-                        <input type="text" name="gst_number" value="{{ old('gst_number') }}"
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PAN Number (Optional)</label>
+                        <input type="text" name="pan_number" value="{{ old('pan_number') }}"
                                class="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                               placeholder="GST number">
-                        @error('gst_number')
+                               placeholder="PAN number">
+                        @error('pan_number')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>

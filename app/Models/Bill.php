@@ -24,6 +24,9 @@ class Bill extends Model
         'total_amount',
         'paid_amount',
         'payment_status',
+        'status',
+        'cancellation_reason',
+        'cancelled_at',
         'notes',
     ];
 
@@ -35,6 +38,7 @@ class Bill extends Model
         'discount_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'paid_amount' => 'decimal:2',
+        'cancelled_at' => 'datetime',
     ];
 
     public function company()

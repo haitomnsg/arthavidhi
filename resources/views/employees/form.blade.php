@@ -15,7 +15,7 @@
         </a>
     </div>
 
-    <form action="{{ isset($employee) ? route('employees.update', $employee) : route('employees.store') }}" method="POST">
+    <form action="{{ isset($employee) ? route('employees.update', $employee) : route('employees.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if(isset($employee))
         @method('PUT')
@@ -25,25 +25,46 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- Personal Information -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Personal Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                        <i class="fas fa-user mr-2 text-primary-500"></i> Personal Information
+                    </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name *</label>
                             <input type="text" name="name" value="{{ old('name', $employee->name ?? '') }}" required
                                    class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="Employee name">
-                            @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Gender</label>
+                            <select name="gender" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                <option value="">Select Gender</option>
+                                <option value="male" {{ old('gender', $employee->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                                <option value="female" {{ old('gender', $employee->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                                <option value="other" {{ old('gender', $employee->gender ?? '') == 'other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Date of Birth</label>
+                            <input type="date" name="date_of_birth" value="{{ old('date_of_birth', isset($employee) && $employee->date_of_birth ? $employee->date_of_birth->format('Y-m-d') : '') }}"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Blood Group</label>
+                            <select name="blood_group" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                <option value="">Select Blood Group</option>
+                                @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $bg)
+                                <option value="{{ $bg }}" {{ old('blood_group', $employee->blood_group ?? '') == $bg ? 'selected' : '' }}>{{ $bg }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
                             <input type="email" name="email" value="{{ old('email', $employee->email ?? '') }}" required
                                    class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="Email address">
-                            @error('email')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            @error('email') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone</label>
@@ -57,6 +78,18 @@
                                    class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="Auto-generated if empty">
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Citizenship Number</label>
+                            <input type="text" name="citizenship_number" value="{{ old('citizenship_number', $employee->citizenship_number ?? '') }}"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   placeholder="Citizenship number">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PAN Number</label>
+                            <input type="text" name="pan_number" value="{{ old('pan_number', $employee->pan_number ?? '') }}"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   placeholder="PAN number">
+                        </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Address</label>
                             <textarea name="address" rows="2"
@@ -68,7 +101,9 @@
 
                 <!-- Employment Details -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Employment Details</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                        <i class="fas fa-briefcase mr-2 text-primary-500"></i> Employment Details
+                    </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Position</label>
@@ -77,22 +112,38 @@
                                    placeholder="Job title">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Department</label>
-                            <input type="text" name="department" value="{{ old('department', $employee->department ?? '') }}"
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Designation</label>
+                            <input type="text" name="designation" value="{{ old('designation', $employee->designation ?? '') }}"
                                    class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                   placeholder="Department name">
+                                   placeholder="e.g. Senior Developer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Department</label>
+                            <select name="department_id" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                <option value="">Select Department</option>
+                                @foreach($departments as $dept)
+                                <option value="{{ $dept->id }}" {{ old('department_id', $employee->department_id ?? '') == $dept->id ? 'selected' : '' }}>{{ $dept->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Shift</label>
+                            <select name="shift_id" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                <option value="">Select Shift</option>
+                                @foreach($shifts as $shift)
+                                <option value="{{ $shift->id }}" {{ old('shift_id', $employee->shift_id ?? '') == $shift->id ? 'selected' : '' }}>{{ $shift->name }} ({{ \Carbon\Carbon::parse($shift->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($shift->end_time)->format('h:i A') }})</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Monthly Salary *</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-gray-500 dark:text-gray-400">Rs</span>
                                 <input type="number" name="salary" value="{{ old('salary', $employee->salary ?? '') }}" required step="0.01"
-                                       class="w-full pl-8 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                       class="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                        placeholder="0.00">
                             </div>
-                            @error('salary')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            @error('salary') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Joining Date</label>
@@ -101,9 +152,78 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Documents & Images -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                        <i class="fas fa-file-image mr-2 text-primary-500"></i> Documents & Images
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Employee Photo -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Employee Photo</label>
+                            @if(isset($employee) && $employee->photo)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $employee->photo) }}" alt="Employee Photo" class="w-24 h-24 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                            </div>
+                            @endif
+                            <input type="file" name="photo" accept="image/*"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-primary-50 file:text-primary-600 dark:file:bg-primary-900/30 dark:file:text-primary-400">
+                            <p class="mt-1 text-xs text-gray-500">Max 2MB. JPG, PNG, WEBP</p>
+                        </div>
+
+                        <!-- Citizenship Front -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Citizenship Card (Front)</label>
+                            @if(isset($employee) && $employee->citizenship_front)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $employee->citizenship_front) }}" alt="Citizenship Front" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                            </div>
+                            @endif
+                            <input type="file" name="citizenship_front" accept="image/*"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-primary-50 file:text-primary-600 dark:file:bg-primary-900/30 dark:file:text-primary-400">
+                        </div>
+
+                        <!-- Citizenship Back -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Citizenship Card (Back)</label>
+                            @if(isset($employee) && $employee->citizenship_back)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $employee->citizenship_back) }}" alt="Citizenship Back" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                            </div>
+                            @endif
+                            <input type="file" name="citizenship_back" accept="image/*"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-primary-50 file:text-primary-600 dark:file:bg-primary-900/30 dark:file:text-primary-400">
+                        </div>
+
+                        <!-- PAN Card Image -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PAN Card Image</label>
+                            @if(isset($employee) && $employee->pan_card_image)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $employee->pan_card_image) }}" alt="PAN Card" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                            </div>
+                            @endif
+                            <input type="file" name="pan_card_image" accept="image/*"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-primary-50 file:text-primary-600 dark:file:bg-primary-900/30 dark:file:text-primary-400">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="space-y-6">
+                <!-- Employee Photo Preview -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+                    @if(isset($employee) && $employee->photo)
+                    <img src="{{ asset('storage/' . $employee->photo) }}" alt="{{ $employee->name }}" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-primary-100 dark:border-primary-900/30">
+                    @else
+                    <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 mx-auto flex items-center justify-center text-white text-4xl font-bold">
+                        {{ strtoupper(substr(old('name', $employee->name ?? 'E'), 0, 1)) }}
+                    </div>
+                    @endif
+                    <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">Employee Photo</p>
+                </div>
+
                 <!-- Status -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Status</h3>

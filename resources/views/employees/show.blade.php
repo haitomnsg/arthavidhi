@@ -10,14 +10,23 @@
             <a href="{{ route('employees.index') }}" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                 <i class="fas fa-arrow-left text-gray-600 dark:text-gray-400"></i>
             </a>
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $employee->name }}</h1>
-                <p class="text-gray-500 dark:text-gray-400">{{ $employee->position }}</p>
+            <div class="flex items-center space-x-4">
+                @if($employee->photo)
+                <img src="{{ asset('storage/' . $employee->photo) }}" alt="{{ $employee->name }}" class="w-16 h-16 rounded-full object-cover border-2 border-primary-200 dark:border-primary-800">
+                @else
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    {{ strtoupper(substr($employee->name, 0, 1)) }}
+                </div>
+                @endif
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $employee->name }}</h1>
+                    <p class="text-gray-500 dark:text-gray-400">{{ $employee->designation ?? $employee->position }}</p>
+                </div>
             </div>
         </div>
         <div class="flex items-center space-x-3">
-            <span class="px-3 py-1 text-sm font-medium rounded-full {{ $employee->status === 'active' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
-                {{ ucfirst($employee->status) }}
+            <span class="px-3 py-1 text-sm font-medium rounded-full {{ $employee->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
+                {{ $employee->is_active ? 'Active' : 'Inactive' }}
             </span>
             <a href="{{ route('employees.edit', $employee) }}" 
                class="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -31,45 +40,86 @@
         <div class="lg:col-span-2 space-y-6">
             <!-- Personal Information -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Personal Information</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                            {{ strtoupper(substr($employee->name, 0, 1)) }}
-                        </div>
-                        <div>
-                            <p class="font-bold text-gray-800 dark:text-white text-lg">{{ $employee->name }}</p>
-                            <p class="text-gray-500 dark:text-gray-400">{{ $employee->employee_id }}</p>
-                        </div>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                    <i class="fas fa-user mr-2 text-primary-500"></i> Personal Information
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Full Name</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->name }}</p>
                     </div>
-                    <div class="space-y-2">
-                        @if($employee->email)
-                        <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-envelope mr-3 text-gray-400 w-5"></i>{{ $employee->email }}</p>
-                        @endif
-                        @if($employee->phone)
-                        <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-phone mr-3 text-gray-400 w-5"></i>{{ $employee->phone }}</p>
-                        @endif
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Gender</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ ucfirst($employee->gender ?? 'Not specified') }}</p>
                     </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Date of Birth</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->date_of_birth ? $employee->date_of_birth->format('M d, Y') : 'Not specified' }}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Blood Group</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->blood_group ?? 'Not specified' }}</p>
+                    </div>
+                    @if($employee->email)
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->email }}</p>
+                    </div>
+                    @endif
+                    @if($employee->phone)
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->phone }}</p>
+                    </div>
+                    @endif
+                    @if($employee->address)
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg md:col-span-2">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Address</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->address }}</p>
+                    </div>
+                    @endif
+                    @if($employee->citizenship_number)
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Citizenship Number</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->citizenship_number }}</p>
+                    </div>
+                    @endif
+                    @if($employee->pan_number)
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">PAN Number</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->pan_number }}</p>
+                    </div>
+                    @endif
                 </div>
-                
-                @if($employee->address)
-                <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                    <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-map-marker-alt mr-3 text-gray-400"></i>{{ $employee->address }}</p>
-                </div>
-                @endif
             </div>
 
             <!-- Employment Details -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Employment Details</h3>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                    <i class="fas fa-briefcase mr-2 text-primary-500"></i> Employment Details
+                </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Position</p>
-                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->position }}</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->position ?? 'Not specified' }}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Designation</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->designation ?? 'Not specified' }}</p>
                     </div>
                     <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Department</p>
-                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->department ?? 'Not specified' }}</p>
+                        <p class="font-medium text-gray-800 dark:text-white">{{ $employee->departmentModel->name ?? $employee->department ?? 'Not specified' }}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Shift</p>
+                        <p class="font-medium text-gray-800 dark:text-white">
+                            @if($employee->shift)
+                            {{ $employee->shift->name }} ({{ \Carbon\Carbon::parse($employee->shift->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($employee->shift->end_time)->format('h:i A') }})
+                            @else
+                            Not assigned
+                            @endif
+                        </p>
                     </div>
                     <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <p class="text-sm text-gray-500 dark:text-gray-400">Date of Joining</p>
@@ -81,6 +131,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Documents -->
+            @if($employee->citizenship_front || $employee->citizenship_back || $employee->pan_card_image)
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+                    <i class="fas fa-file-image mr-2 text-primary-500"></i> Documents
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    @if($employee->citizenship_front)
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Citizenship (Front)</p>
+                        <img src="{{ asset('storage/' . $employee->citizenship_front) }}" alt="Citizenship Front" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
+                    </div>
+                    @endif
+                    @if($employee->citizenship_back)
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Citizenship (Back)</p>
+                        <img src="{{ asset('storage/' . $employee->citizenship_back) }}" alt="Citizenship Back" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
+                    </div>
+                    @endif
+                    @if($employee->pan_card_image)
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">PAN Card</p>
+                        <img src="{{ asset('storage/' . $employee->pan_card_image) }}" alt="PAN Card" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
 
             <!-- Attendance Summary -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
@@ -99,7 +178,7 @@
                         <p class="text-2xl font-bold text-red-600">{{ $attendanceSummary['absent'] ?? 0 }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Absent</p>
                     </div>
-                    <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                    <div class="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                         <p class="text-2xl font-bold text-yellow-600">{{ $attendanceSummary['half_day'] ?? 0 }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Half Day</p>
                     </div>
@@ -123,8 +202,8 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-500 dark:text-gray-400">Status</span>
-                        <span class="px-2 py-1 text-xs font-medium rounded-full {{ $employee->status === 'active' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
-                            {{ ucfirst($employee->status) }}
+                        <span class="px-2 py-1 text-xs font-medium rounded-full {{ $employee->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
+                            {{ $employee->is_active ? 'Active' : 'Inactive' }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
@@ -141,54 +220,14 @@
                         <span class="text-gray-500 dark:text-gray-400">Monthly Salary</span>
                         <span class="font-medium text-gray-800 dark:text-white">Rs. {{ number_format($employee->salary, 2) }}</span>
                     </div>
-                </div>
-            </div>
-
-            <!-- Bank Details -->
-            @if($employee->bank_name || $employee->account_number)
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Bank Details</h3>
-                <div class="space-y-3">
-                    @if($employee->bank_name)
-                    <div class="flex justify-between">
-                        <span class="text-gray-500 dark:text-gray-400">Bank</span>
-                        <span class="font-medium text-gray-800 dark:text-white">{{ $employee->bank_name }}</span>
-                    </div>
-                    @endif
-                    @if($employee->account_number)
-                    <div class="flex justify-between">
-                        <span class="text-gray-500 dark:text-gray-400">Account No</span>
-                        <span class="font-medium text-gray-800 dark:text-white">{{ $employee->account_number }}</span>
-                    </div>
-                    @endif
-                    @if($employee->ifsc_code)
-                    <div class="flex justify-between">
-                        <span class="text-gray-500 dark:text-gray-400">IFSC Code</span>
-                        <span class="font-medium text-gray-800 dark:text-white">{{ $employee->ifsc_code }}</span>
+                    @if($employee->blood_group)
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500 dark:text-gray-400">Blood Group</span>
+                        <span class="font-medium text-red-600 dark:text-red-400">{{ $employee->blood_group }}</span>
                     </div>
                     @endif
                 </div>
             </div>
-            @endif
-
-            <!-- Emergency Contact -->
-            @if($employee->emergency_contact)
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Emergency Contact</h3>
-                <div class="space-y-3">
-                    @if($employee->emergency_contact_name)
-                    <div class="flex justify-between">
-                        <span class="text-gray-500 dark:text-gray-400">Name</span>
-                        <span class="font-medium text-gray-800 dark:text-white">{{ $employee->emergency_contact_name }}</span>
-                    </div>
-                    @endif
-                    <div class="flex justify-between">
-                        <span class="text-gray-500 dark:text-gray-400">Phone</span>
-                        <span class="font-medium text-gray-800 dark:text-white">{{ $employee->emergency_contact }}</span>
-                    </div>
-                </div>
-            </div>
-            @endif
 
             <!-- Actions -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">

@@ -13,6 +13,10 @@ use App\Http\Controllers\Web\EmployeeController;
 use App\Http\Controllers\Web\AttendanceController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\Web\SettingsController;
+use App\Http\Controllers\Web\ShiftController;
+use App\Http\Controllers\Web\DepartmentController;
+use App\Http\Controllers\Web\IncomeController;
+use App\Http\Controllers\Web\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,10 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     
     // Bills
-    Route::resource('bills', BillController::class);
+    Route::resource('bills', BillController::class)->except(['destroy']);
     Route::get('bills/{bill}/pdf', [BillController::class, 'pdf'])->name('bills.pdf');
     Route::post('bills/{bill}/payment', [BillController::class, 'recordPayment'])->name('bills.payment');
     Route::get('bills/{bill}/duplicate', [BillController::class, 'duplicate'])->name('bills.duplicate');
+    Route::post('bills/{bill}/cancel', [BillController::class, 'cancel'])->name('bills.cancel');
     
     // Quotations
     Route::resource('quotations', QuotationController::class);
@@ -62,6 +67,24 @@ Route::middleware('auth')->group(function () {
     
     // Employees
     Route::resource('employees', EmployeeController::class);
+    
+    // Shifts
+    Route::resource('shifts', ShiftController::class)->except(['show']);
+    
+    // Departments
+    Route::resource('departments', DepartmentController::class)->except(['show']);
+    
+    // Income
+    Route::resource('incomes', IncomeController::class)->except(['show']);
+    
+    // Salaries
+    Route::resource('salaries', SalaryController::class);
+    Route::post('salaries/{salary}/mark-paid', [SalaryController::class, 'markPaid'])->name('salaries.mark-paid');
+    Route::post('salaries-generate', [SalaryController::class, 'generate'])->name('salaries.generate');
+    Route::get('salary-advances', [SalaryController::class, 'advances'])->name('salaries.advances');
+    Route::get('salary-advances/create', [SalaryController::class, 'advanceCreate'])->name('salaries.advance.create');
+    Route::post('salary-advances', [SalaryController::class, 'advanceStore'])->name('salaries.advance.store');
+    Route::delete('salary-advances/{advance}', [SalaryController::class, 'advanceDestroy'])->name('salaries.advance.destroy');
     
     // Attendance
     Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');

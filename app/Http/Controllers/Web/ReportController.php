@@ -1033,7 +1033,7 @@ class ReportController extends Controller
         $sheet->setTitle('Tax Report');
 
         $sheet->setCellValue('A1', $company->name ?? 'ArthaVidhi');
-        $sheet->setCellValue('A2', 'Tax Report (GST Summary)');
+        $sheet->setCellValue('A2', 'Tax Report (Tax Summary)');
         $sheet->setCellValue('A3', $startDate->format('M d, Y') . ' - ' . $endDate->format('M d, Y'));
         $sheet->mergeCells('A1:G1');
         $sheet->mergeCells('A2:G2');
@@ -1355,7 +1355,7 @@ class ReportController extends Controller
     {
         // Get unique tax rates and calculate breakdown
         $breakdown = [];
-        $rates = [5, 12, 18, 28]; // Common GST rates
+        $rates = [5, 13, 18, 28]; // Common Tax rates
 
         foreach ($rates as $rate) {
             $items = DB::table($itemsTable)

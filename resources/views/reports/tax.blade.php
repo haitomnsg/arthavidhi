@@ -106,7 +106,7 @@
         <canvas id="taxSummaryChart" height="100"></canvas>
     </div>
 
-    <!-- GST Breakdown -->
+    <!-- VAT Breakdown -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Output Tax (Sales) -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
@@ -121,8 +121,7 @@
                         <tr class="text-left text-sm text-gray-500 dark:text-gray-400">
                             <th class="px-6 py-3 font-medium dark:text-white">Tax Rate</th>
                             <th class="px-6 py-3 font-medium text-right">Taxable Value</th>
-                            <th class="px-6 py-3 font-medium text-right">CGST</th>
-                            <th class="px-6 py-3 font-medium text-right">SGST</th>
+                            <th class="px-6 py-3 font-medium text-right">VAT</th>
                             <th class="px-6 py-3 font-medium text-right">Total Tax</th>
                         </tr>
                     </thead>
@@ -131,8 +130,7 @@
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-800 dark:text-white">{{ $rate }}%</td>
                             <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['taxable'], 2) }}</td>
-                            <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['cgst'], 2) }}</td>
-                            <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['sgst'], 2) }}</td>
+                            <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['cgst'] + $data['sgst'], 2) }}</td>
                             <td class="px-6 py-4 text-right font-medium text-gray-800 dark:text-white">Rs. {{ number_format($data['total'], 2) }}</td>
                         </tr>
                         @endforeach
@@ -141,8 +139,7 @@
                         <tr>
                             <td class="px-6 py-4 text-green-800">Total</td>
                             <td class="px-6 py-4 text-right text-green-800">Rs. {{ number_format(collect($outputTaxBreakdown)->sum('taxable'), 2) }}</td>
-                            <td class="px-6 py-4 text-right text-green-800">Rs. {{ number_format(collect($outputTaxBreakdown)->sum('cgst'), 2) }}</td>
-                            <td class="px-6 py-4 text-right text-green-800">Rs. {{ number_format(collect($outputTaxBreakdown)->sum('sgst'), 2) }}</td>
+                            <td class="px-6 py-4 text-right text-green-800">Rs. {{ number_format(collect($outputTaxBreakdown)->sum('cgst') + collect($outputTaxBreakdown)->sum('sgst'), 2) }}</td>
                             <td class="px-6 py-4 text-right text-green-800">Rs. {{ number_format($summary['output_tax'], 2) }}</td>
                         </tr>
                     </tfoot>
@@ -163,8 +160,7 @@
                         <tr class="text-left text-sm text-gray-500 dark:text-gray-400">
                             <th class="px-6 py-3 font-medium dark:text-white">Tax Rate</th>
                             <th class="px-6 py-3 font-medium text-right">Taxable Value</th>
-                            <th class="px-6 py-3 font-medium text-right">CGST</th>
-                            <th class="px-6 py-3 font-medium text-right">SGST</th>
+                            <th class="px-6 py-3 font-medium text-right">VAT</th>
                             <th class="px-6 py-3 font-medium text-right">Total Tax</th>
                         </tr>
                     </thead>
@@ -173,8 +169,7 @@
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-800 dark:text-white">{{ $rate }}%</td>
                             <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['taxable'], 2) }}</td>
-                            <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['cgst'], 2) }}</td>
-                            <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['sgst'], 2) }}</td>
+                            <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">Rs. {{ number_format($data['cgst'] + $data['sgst'], 2) }}</td>
                             <td class="px-6 py-4 text-right font-medium text-gray-800 dark:text-white">Rs. {{ number_format($data['total'], 2) }}</td>
                         </tr>
                         @endforeach
@@ -183,8 +178,7 @@
                         <tr>
                             <td class="px-6 py-4 text-red-800">Total</td>
                             <td class="px-6 py-4 text-right text-red-800">Rs. {{ number_format(collect($inputTaxBreakdown)->sum('taxable'), 2) }}</td>
-                            <td class="px-6 py-4 text-right text-red-800">Rs. {{ number_format(collect($inputTaxBreakdown)->sum('cgst'), 2) }}</td>
-                            <td class="px-6 py-4 text-right text-red-800">Rs. {{ number_format(collect($inputTaxBreakdown)->sum('sgst'), 2) }}</td>
+                            <td class="px-6 py-4 text-right text-red-800">Rs. {{ number_format(collect($inputTaxBreakdown)->sum('cgst') + collect($inputTaxBreakdown)->sum('sgst'), 2) }}</td>
                             <td class="px-6 py-4 text-right text-red-800">Rs. {{ number_format($summary['input_tax'], 2) }}</td>
                         </tr>
                     </tfoot>

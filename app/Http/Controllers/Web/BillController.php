@@ -197,9 +197,17 @@ class BillController extends Controller
             ->with('success', 'Bill updated successfully.');
     }
 
-    public function destroy(Bill $bill)
+    public function cancel(Request $request, Bill $bill)
     {
         $this->authorizeAccess($bill);
+        
+        if ($bill->status === 'cancelled') {
+            return back()->with('error', 'Bill is already cancelled.');
+        }
+        
+        $validated = $request->validate([
+            'cancellation_reason' => 'required|string|min:10|max:500',
+        ]);
         
         // Restore stock
         foreach ($bill->items as $item) {
@@ -209,11 +217,14 @@ class BillController extends Controller
             }
         }
 
-        $bill->items()->delete();
-        $bill->delete();
+        $bill->update([
+            'status' => 'cancelled',
+            'cancellation_reason' => $validated['cancellation_reason'],
+            'cancelled_at' => now(),
+        ]);
 
         return redirect()->route('bills.index')
-            ->with('success', 'Bill deleted successfully.');
+            ->with('success', 'Bill cancelled successfully. Stock has been restored.');
     }
 
     public function pdf(Bill $bill)

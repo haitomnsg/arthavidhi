@@ -63,11 +63,11 @@
                                    placeholder="Enter email address">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">GSTIN</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">VAT/PAN Number</label>
                             <input type="text" name="supplier_gstin" 
                                    value="{{ old('supplier_gstin', $purchase->supplier_gstin ?? '') }}"
                                    class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                   placeholder="Enter GSTIN">
+                                   placeholder="Enter VAT/PAN number">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Invoice Number</label>

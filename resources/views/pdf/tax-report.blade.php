@@ -34,7 +34,7 @@
     <div class="container">
         <div class="header">
             <div class="company-name">{{ $company->name ?? 'ArthaVidhi' }}</div>
-            <div class="report-title">TAX REPORT (GST SUMMARY)</div>
+            <div class="report-title">TAX REPORT (Tax SUMMARY)</div>
             <div class="date-range">{{ $startDate->format('M d, Y') }} - {{ $endDate->format('M d, Y') }}</div>
         </div>
 

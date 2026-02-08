@@ -16,8 +16,8 @@
             </div>
         </div>
         <div class="flex items-center space-x-3">
-            <span class="px-3 py-1 text-sm font-medium rounded-full {{ $product->status === 'active' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
-                {{ ucfirst($product->status) }}
+            <span class="px-3 py-1 text-sm font-medium rounded-full {{ $product->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
+                {{ $product->is_active ? 'Active' : 'Inactive' }}
             </span>
             <a href="{{ route('products.edit', $product) }}" 
                class="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -183,8 +183,8 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-500 dark:text-gray-400">Status</span>
-                        <span class="px-2 py-1 text-xs font-medium rounded-full {{ $product->status === 'active' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
-                            {{ ucfirst($product->status) }}
+                        <span class="px-2 py-1 text-xs font-medium rounded-full {{ $product->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }}">
+                            {{ $product->is_active ? 'Active' : 'Inactive' }}
                         </span>
                     </div>
                     @if($product->purchase_price && $product->selling_price)

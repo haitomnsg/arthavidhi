@@ -61,7 +61,7 @@
                         <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>{{ $purchase->supplier_address }}</p>
                         @endif
                         @if($purchase->supplier_gstin)
-                        <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-id-card mr-2 text-gray-400"></i>GSTIN: {{ $purchase->supplier_gstin }}</p>
+                        <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-id-card mr-2 text-gray-400"></i>VAT/PAN: {{ $purchase->supplier_gstin }}</p>
                         @endif
                         @if($purchase->supplier_invoice)
                         <p class="text-gray-600 dark:text-gray-400"><i class="fas fa-file-invoice mr-2 text-gray-400"></i>Supplier Invoice: {{ $purchase->supplier_invoice }}</p>

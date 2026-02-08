@@ -182,7 +182,7 @@
                 </div>
                 <div>
                     <h3 class="font-semibold text-gray-800 dark:text-white">Tax Report</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">GST & tax summaries</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Tax Summaries</p>
                 </div>
             </div>
         </a>

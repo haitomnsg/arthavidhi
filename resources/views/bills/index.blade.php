@@ -79,7 +79,9 @@
                         <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $bill->items->count() }} items</td>
                         <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">Rs. {{ number_format($bill->total_amount, 2) }}</td>
                         <td class="px-6 py-4">
-                            @if($bill->payment_status === 'paid')
+                            @if($bill->status === 'cancelled')
+                            <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-400 rounded-full text-sm">Cancelled</span>
+                            @elseif($bill->payment_status === 'paid')
                             <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm">Paid</span>
                             @elseif($bill->payment_status === 'partial')
                             <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-sm">Partial</span>
@@ -98,14 +100,19 @@
                                 <a href="{{ route('bills.pdf', $bill) }}" class="p-2 text-gray-500 hover:text-green-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg" title="Download PDF" target="_blank">
                                     <i class="fas fa-file-pdf"></i>
                                 </a>
-                                <form action="{{ route('bills.destroy', $bill) }}" method="POST" class="inline" 
-                                      onsubmit="return confirm('Are you sure you want to delete this bill?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="p-2 text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                                @if($bill->status !== 'cancelled')
+                                <button 
+                                    type="button"
+                                    @click="window.dispatchEvent(new CustomEvent('open-cancel-modal', { detail: { billId: {{ $bill->id }}, billNumber: '{{ $bill->bill_number }}' } }))"
+                                    class="p-2 text-gray-500 hover:text-orange-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg" 
+                                    title="Cancel Bill">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                @else
+                                <span class="p-2 text-gray-400" title="Cancelled">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -132,5 +139,8 @@
         </div>
         @endif
     </div>
+
+    <!-- Cancel Bill Modal -->
+    @include('components.cancel-bill-modal')
 </div>
 @endsection
