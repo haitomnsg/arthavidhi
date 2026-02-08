@@ -7,10 +7,10 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">{{ isset($product) ? 'Edit Product' : 'Add New Product' }}</h1>
-            <p class="text-gray-500">{{ isset($product) ? 'Update product details' : 'Add a new product to inventory' }}</p>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ isset($product) ? 'Edit Product' : 'Add New Product' }}</h1>
+            <p class="text-gray-500 dark:text-gray-400">{{ isset($product) ? 'Update product details' : 'Add a new product to inventory' }}</p>
         </div>
-        <a href="{{ route('products.index') }}" class="px-4 py-2 text-gray-600 hover:text-gray-800">
+        <a href="{{ route('products.index') }}" class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-white">
             <i class="fas fa-arrow-left mr-2"></i> Back to Products
         </a>
     </div>
@@ -24,36 +24,36 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Main Info -->
             <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Basic Information</h3>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Basic Information</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product Name *</label>
                             <input type="text" name="name" value="{{ old('name', $product->name ?? '') }}" required
-                                   class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="Enter product name">
                             @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">SKU *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SKU *</label>
                             <input type="text" name="sku" value="{{ old('sku', $product->sku ?? '') }}" required
-                                   class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="Product SKU">
                             @error('sku')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Barcode</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Barcode</label>
                             <input type="text" name="barcode" value="{{ old('barcode', $product->barcode ?? '') }}"
-                                   class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="Barcode number">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                            <select name="category_id" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                            <select name="category_id" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
@@ -63,8 +63,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Unit</label>
-                            <select name="unit" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Unit</label>
+                            <select name="unit" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                                 <option value="piece" {{ old('unit', $product->unit ?? '') === 'piece' ? 'selected' : '' }}>Piece</option>
                                 <option value="kg" {{ old('unit', $product->unit ?? '') === 'kg' ? 'selected' : '' }}>Kilogram (kg)</option>
                                 <option value="g" {{ old('unit', $product->unit ?? '') === 'g' ? 'selected' : '' }}>Gram (g)</option>
@@ -76,23 +76,23 @@
                             </select>
                         </div>
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
                             <textarea name="description" rows="3"
-                                      class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                      class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                       placeholder="Product description">{{ old('description', $product->description ?? '') }}</textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Pricing</h3>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Pricing</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Purchase Price *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Purchase Price *</label>
                             <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500">Rs</span>
+                                <span class="absolute left-3 top-2 text-gray-500 dark:text-gray-400">Rs</span>
                                 <input type="number" name="purchase_price" value="{{ old('purchase_price', $product->purchase_price ?? '') }}" required step="0.01"
-                                       class="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                       class="w-full pl-8 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                        placeholder="0.00">
                             </div>
                             @error('purchase_price')
@@ -100,11 +100,11 @@
                             @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Selling Price *</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Selling Price *</label>
                             <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500">Rs</span>
+                                <span class="absolute left-3 top-2 text-gray-500 dark:text-gray-400">Rs</span>
                                 <input type="number" name="selling_price" value="{{ old('selling_price', $product->selling_price ?? '') }}" required step="0.01"
-                                       class="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                       class="w-full pl-8 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                        placeholder="0.00">
                             </div>
                             @error('selling_price')
@@ -112,29 +112,29 @@
                             @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tax Rate (%)</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tax Rate (%)</label>
                             <input type="number" name="tax_rate" value="{{ old('tax_rate', $product->tax_rate ?? 0) }}" step="0.01"
-                                   class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="0">
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Stock Management</h3>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Stock Management</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Stock</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Stock</label>
                             <input type="number" name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity ?? 0) }}"
-                                   class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="0">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Stock Level</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Minimum Stock Level</label>
                             <input type="number" name="min_stock_level" value="{{ old('min_stock_level', $product->min_stock_level ?? 10) }}"
-                                   class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                   class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                                    placeholder="10">
-                            <p class="mt-1 text-sm text-gray-500">You'll be alerted when stock falls below this level</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">You'll be alerted when stock falls below this level</p>
                         </div>
                     </div>
                 </div>
@@ -142,8 +142,8 @@
 
             <!-- Sidebar -->
             <div class="space-y-6">
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100" x-data="imageUpload()">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Product Image</h3>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700" x-data="imageUpload()">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Product Image</h3>
                     <div class="space-y-4">
                         <div class="relative" x-show="imagePreview || hasExistingImage" x-cloak>
                             <img :src="imagePreview || existingImage" alt="Product image" class="w-full h-48 object-cover rounded-lg">
@@ -157,10 +157,10 @@
                                 </button>
                             </div>
                         </div>
-                        <label x-show="!imagePreview && !hasExistingImage" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
+                        <label x-show="!imagePreview && !hasExistingImage" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
                             <div class="text-center">
                                 <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
-                                <p class="text-sm text-gray-500">Click to upload image</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Click to upload image</p>
                                 <p class="text-xs text-gray-400">PNG, JPG up to 2MB</p>
                             </div>
                             <input type="file" name="image" class="hidden" accept="image/*" @change="previewImage($event)">
@@ -171,15 +171,15 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Status</h3>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Status</h3>
                     <label class="flex items-center space-x-3">
                         <input type="checkbox" name="is_active" value="1" 
                                {{ old('is_active', $product->is_active ?? true) ? 'checked' : '' }}
                                class="w-5 h-5 rounded border-gray-300 text-primary-500 focus:ring-primary-500">
-                        <span class="text-gray-700">Product is active</span>
+                        <span class="text-gray-700 dark:text-gray-300">Product is active</span>
                     </label>
-                    <p class="mt-2 text-sm text-gray-500">Inactive products won't appear in bill creation</p>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Inactive products won't appear in bill creation</p>
                 </div>
 
                 <!-- Actions -->
@@ -187,7 +187,7 @@
                     <button type="submit" class="w-full px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
                         <i class="fas fa-save mr-2"></i> {{ isset($product) ? 'Update Product' : 'Save Product' }}
                     </button>
-                    <a href="{{ route('products.index') }}" class="block text-center w-full px-6 py-3 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors">
+                    <a href="{{ route('products.index') }}" class="block text-center w-full px-6 py-3 border border-gray-200 dark:border-gray-600 text-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         Cancel
                     </a>
                 </div>

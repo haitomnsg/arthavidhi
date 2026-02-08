@@ -77,6 +77,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('profit-loss');
         Route::get('/customers', [ReportController::class, 'customers'])->name('customers');
         Route::get('/tax', [ReportController::class, 'tax'])->name('tax');
+
+        // Excel exports
+        Route::get('/sales/excel', [ReportController::class, 'salesExcel'])->name('sales.excel');
+        Route::get('/inventory/excel', [ReportController::class, 'inventoryExcel'])->name('inventory.excel');
+        Route::get('/expenses/excel', [ReportController::class, 'expensesExcel'])->name('expenses.excel');
+        Route::get('/profit-loss/excel', [ReportController::class, 'profitLossExcel'])->name('profit-loss.excel');
+        Route::get('/customers/excel', [ReportController::class, 'customersExcel'])->name('customers.excel');
+        Route::get('/tax/excel', [ReportController::class, 'taxExcel'])->name('tax.excel');
+
+        // PDF exports
+        Route::get('/sales/pdf', [ReportController::class, 'salesPdf'])->name('sales.pdf');
+        Route::get('/inventory/pdf', [ReportController::class, 'inventoryPdf'])->name('inventory.pdf');
+        Route::get('/expenses/pdf', [ReportController::class, 'expensesPdf'])->name('expenses.pdf');
+        Route::get('/profit-loss/pdf', [ReportController::class, 'profitLossPdf'])->name('profit-loss.pdf');
+        Route::get('/customers/pdf', [ReportController::class, 'customersPdf'])->name('customers.pdf');
+        Route::get('/tax/pdf', [ReportController::class, 'taxPdf'])->name('tax.pdf');
     });
     
     // Settings

@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Reports')
+@section('title', 'Reports Dashboard')
 
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Reports</h1>
-            <p class="text-gray-500">Analyze your business performance</p>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Reports Dashboard</h1>
+            <p class="text-gray-500 dark:text-gray-400">Analyze your business performance</p>
         </div>
         <div class="flex items-center space-x-3">
-            <select id="reportPeriod" class="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            <select id="reportPeriod" class="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                 <option value="today">Today</option>
                 <option value="week">This Week</option>
                 <option value="month" selected>This Month</option>
@@ -19,7 +19,7 @@
                 <option value="year">This Year</option>
                 <option value="custom">Custom Range</option>
             </select>
-            <button onclick="window.print()" class="px-4 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            <button onclick="window.print()" class="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <i class="fas fa-print mr-2"></i> Print
             </button>
         </div>
@@ -34,7 +34,7 @@
                     <p class="text-3xl font-bold mt-1">Rs. {{ number_format($totalRevenue ?? 0, 0) }}</p>
                 </div>
                 <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-trending-up text-2xl"></i>
+                    <i class="fas fa-rupee-sign text-2xl"></i>
                 </div>
             </div>
             <p class="mt-4 text-sm text-green-100">
@@ -91,16 +91,16 @@
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Revenue Chart -->
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Revenue vs Expenses</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Revenue vs Expenses</h3>
             <div style="height: 300px;">
                 <canvas id="revenueChart"></canvas>
             </div>
         </div>
 
         <!-- Category Distribution -->
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Sales by Category</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Sales by Category</h3>
             <div style="height: 300px;">
                 <canvas id="categoryChart"></canvas>
             </div>
@@ -110,123 +110,123 @@
     <!-- Report Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Sales Report -->
-        <a href="{{ route('reports.sales') }}" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all group">
+        <a href="{{ route('reports.sales') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
                     <i class="fas fa-chart-line text-green-600 text-2xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-800">Sales Report</h3>
-                    <p class="text-sm text-gray-500">Daily, weekly, monthly sales</p>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Sales Report</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Daily, weekly, monthly sales</p>
                 </div>
             </div>
         </a>
 
         <!-- Inventory Report -->
-        <a href="{{ route('reports.inventory') }}" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all group">
+        <a href="{{ route('reports.inventory') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                     <i class="fas fa-boxes text-blue-600 text-2xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-800">Inventory Report</h3>
-                    <p class="text-sm text-gray-500">Stock levels and movements</p>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Inventory Report</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Stock levels and movements</p>
                 </div>
             </div>
         </a>
 
         <!-- Expense Report -->
-        <a href="{{ route('reports.expenses') }}" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all group">
+        <a href="{{ route('reports.expenses') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                <div class="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <i class="fas fa-receipt text-red-600 text-2xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-800">Expense Report</h3>
-                    <p class="text-sm text-gray-500">Category-wise expenses</p>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Expense Report</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Category-wise expenses</p>
                 </div>
             </div>
         </a>
 
         <!-- Profit & Loss -->
-        <a href="{{ route('reports.profit-loss') }}" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all group">
+        <a href="{{ route('reports.profit-loss') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
                     <i class="fas fa-balance-scale text-purple-600 text-2xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-800">Profit & Loss</h3>
-                    <p class="text-sm text-gray-500">Financial statements</p>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Profit & Loss</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Financial statements</p>
                 </div>
             </div>
         </a>
 
         <!-- Customer Report -->
-        <a href="{{ route('reports.customers') }}" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all group">
+        <a href="{{ route('reports.customers') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
+                <div class="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
                     <i class="fas fa-users text-yellow-600 text-2xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-800">Customer Report</h3>
-                    <p class="text-sm text-gray-500">Top customers & analytics</p>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Customer Report</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Top customers & analytics</p>
                 </div>
             </div>
         </a>
 
         <!-- Tax Report -->
-        <a href="{{ route('reports.tax') }}" class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-200 transition-all group">
+        <a href="{{ route('reports.tax') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
             <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                <div class="w-14 h-14 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center group-hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                     <i class="fas fa-file-invoice-dollar text-gray-600 text-2xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-semibold text-gray-800">Tax Report</h3>
-                    <p class="text-sm text-gray-500">GST & tax summaries</p>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Tax Report</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">GST & tax summaries</p>
                 </div>
             </div>
         </a>
     </div>
 
     <!-- Recent Transactions -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Recent Transactions</h3>
             <a href="{{ route('bills.index') }}" class="text-primary-500 hover:underline text-sm">View All</a>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead>
-                    <tr class="text-left text-sm text-gray-500 border-b">
-                        <th class="pb-3 font-medium">Date</th>
-                        <th class="pb-3 font-medium">Type</th>
-                        <th class="pb-3 font-medium">Reference</th>
-                        <th class="pb-3 font-medium">Customer/Supplier</th>
+                    <tr class="text-left text-sm text-gray-500 dark:text-gray-400 border-b">
+                        <th class="pb-3 font-medium dark:text-white">Date</th>
+                        <th class="pb-3 font-medium dark:text-white">Type</th>
+                        <th class="pb-3 font-medium dark:text-white">Reference</th>
+                        <th class="pb-3 font-medium dark:text-white">Customer/Supplier</th>
                         <th class="pb-3 font-medium text-right">Amount</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y">
                     @forelse($recentTransactions ?? [] as $transaction)
                     <tr class="text-sm">
-                        <td class="py-3 text-gray-600">{{ $transaction->date->format('M d, Y') }}</td>
+                        <td class="py-3 text-gray-600 dark:text-gray-400">{{ $transaction->date->format('M d, Y') }}</td>
                         <td class="py-3">
                             @if($transaction->type === 'sale')
-                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Sale</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs">Sale</span>
                             @elseif($transaction->type === 'purchase')
-                            <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Purchase</span>
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs">Purchase</span>
                             @else
-                            <span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">Expense</span>
+                            <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-xs">Expense</span>
                             @endif
                         </td>
                         <td class="py-3 text-primary-500">{{ $transaction->reference }}</td>
-                        <td class="py-3 text-gray-800">{{ $transaction->party_name }}</td>
+                        <td class="py-3 text-gray-800 dark:text-white">{{ $transaction->party_name }}</td>
                         <td class="py-3 text-right font-medium {{ $transaction->type === 'sale' ? 'text-green-600' : 'text-red-600' }}">
                             {{ $transaction->type === 'sale' ? '+' : '-' }}Rs. {{ number_format($transaction->amount, 2) }}
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="py-8 text-center text-gray-500">No recent transactions</td>
+                        <td colspan="5" class="py-8 text-center text-gray-500 dark:text-gray-400">No recent transactions</td>
                     </tr>
                     @endforelse
                 </tbody>

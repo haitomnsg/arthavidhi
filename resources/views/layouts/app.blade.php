@@ -426,11 +426,53 @@
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Reports</p>
                 </div>
                 <a href="{{ route('reports.index') }}" 
-                   @click.prevent="openTab('{{ route('reports.index') }}', 'Reports', 'fa-chart-bar')"
+                   @click.prevent="openTab('{{ route('reports.index') }}', 'Reports Dashboard', 'fa-chart-bar')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
                    :class="{ 'active': isTabActive('{{ route('reports.index') }}') }">
-                    <i class="fas fa-chart-bar w-5"></i>
-                    <span>Reports</span>
+                    <i class="fas fa-tachometer-alt w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ route('reports.sales') }}" 
+                   @click.prevent="openTab('{{ route('reports.sales') }}', 'Sales Report', 'fa-chart-line')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
+                   :class="{ 'active': isTabActive('{{ route('reports.sales') }}') }">
+                    <i class="fas fa-chart-line w-5 text-xs"></i>
+                    <span>Sales Report</span>
+                </a>
+                <a href="{{ route('reports.inventory') }}" 
+                   @click.prevent="openTab('{{ route('reports.inventory') }}', 'Inventory Report', 'fa-boxes')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
+                   :class="{ 'active': isTabActive('{{ route('reports.inventory') }}') }">
+                    <i class="fas fa-boxes w-5 text-xs"></i>
+                    <span>Inventory Report</span>
+                </a>
+                <a href="{{ route('reports.expenses') }}" 
+                   @click.prevent="openTab('{{ route('reports.expenses') }}', 'Expense Report', 'fa-receipt')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
+                   :class="{ 'active': isTabActive('{{ route('reports.expenses') }}') }">
+                    <i class="fas fa-receipt w-5 text-xs"></i>
+                    <span>Expense Report</span>
+                </a>
+                <a href="{{ route('reports.profit-loss') }}" 
+                   @click.prevent="openTab('{{ route('reports.profit-loss') }}', 'Profit & Loss', 'fa-balance-scale')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
+                   :class="{ 'active': isTabActive('{{ route('reports.profit-loss') }}') }">
+                    <i class="fas fa-balance-scale w-5 text-xs"></i>
+                    <span>Profit & Loss</span>
+                </a>
+                <a href="{{ route('reports.customers') }}" 
+                   @click.prevent="openTab('{{ route('reports.customers') }}', 'Customer Report', 'fa-user-friends')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
+                   :class="{ 'active': isTabActive('{{ route('reports.customers') }}') }">
+                    <i class="fas fa-user-friends w-5 text-xs"></i>
+                    <span>Customer Report</span>
+                </a>
+                <a href="{{ route('reports.tax') }}" 
+                   @click.prevent="openTab('{{ route('reports.tax') }}', 'Tax Report', 'fa-file-invoice-dollar')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
+                   :class="{ 'active': isTabActive('{{ route('reports.tax') }}') }">
+                    <i class="fas fa-file-invoice-dollar w-5 text-xs"></i>
+                    <span>Tax Report</span>
                 </a>
             </nav>
 
@@ -462,7 +504,7 @@
                 </button>
                 <div class="flex items-center gap-4">
                     <!-- Dark Mode Toggle -->
-                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" 
+                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode); document.querySelectorAll('iframe').forEach(f => { try { f.contentDocument.documentElement.classList.toggle('dark', darkMode) } catch(e){} })" 
                             class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <i class="fas fa-moon text-lg" x-show="!darkMode"></i>
                         <i class="fas fa-sun text-lg text-yellow-400" x-show="darkMode" x-cloak></i>

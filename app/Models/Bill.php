@@ -51,4 +51,9 @@ class Bill extends Model
     {
         return $this->total_amount - $this->paid_amount;
     }
+
+    public function getTotalAttribute()
+    {
+        return $this->total_amount;
+    }
 }

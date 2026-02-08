@@ -11,18 +11,22 @@ class Employee extends Model
 
     protected $fillable = [
         'company_id',
+        'employee_id',
         'name',
         'email',
         'phone',
         'address',
         'position',
+        'department',
         'salary',
         'hire_date',
+        'joining_date',
         'is_active',
     ];
 
     protected $casts = [
         'hire_date' => 'date',
+        'joining_date' => 'date',
         'salary' => 'decimal:2',
         'is_active' => 'boolean',
     ];

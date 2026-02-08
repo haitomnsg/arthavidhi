@@ -7,22 +7,22 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Attendance Report</h1>
-            <p class="text-gray-500">Monthly attendance summary</p>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Attendance Report</h1>
+            <p class="text-gray-500 dark:text-gray-400">Monthly attendance summary</p>
         </div>
         <div class="flex items-center space-x-3">
-            <a href="{{ route('attendance.index') }}" class="px-4 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            <a href="{{ route('attendance.index') }}" class="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <i class="fas fa-calendar-check mr-2"></i> Mark Attendance
             </a>
         </div>
     </div>
 
     <!-- Filters -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
         <form action="{{ route('attendance.report') }}" method="GET" class="flex flex-wrap items-end gap-4">
             <div class="flex-1 min-w-[150px]">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Month</label>
-                <select name="month" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Month</label>
+                <select name="month" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                     @foreach(range(1, 12) as $m)
                     <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
                         {{ date('F', mktime(0, 0, 0, $m, 1)) }}
@@ -31,16 +31,16 @@
                 </select>
             </div>
             <div class="flex-1 min-w-[150px]">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Year</label>
-                <select name="year" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Year</label>
+                <select name="year" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                     @foreach(range(date('Y') - 2, date('Y') + 1) as $y)
                     <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="flex-1 min-w-[200px]">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Employee</label>
-                <select name="employee_id" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Employee</label>
+                <select name="employee_id" class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                     <option value="">All Employees</option>
                     @foreach($employees as $emp)
                     <option value="{{ $emp->id }}" {{ request('employee_id') == $emp->id ? 'selected' : '' }}>
@@ -57,73 +57,73 @@
 
     <!-- Summary Stats -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-calendar text-gray-600"></i>
+                <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-calendar text-gray-600 dark:text-gray-400"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Working Days</p>
-                    <p class="text-xl font-bold text-gray-800">{{ $workingDays }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Working Days</p>
+                    <p class="text-xl font-bold text-gray-800 dark:text-white">{{ $workingDays }}</p>
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
                     <i class="fas fa-user-check text-green-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Total Present</p>
-                    <p class="text-xl font-bold text-gray-800">{{ $summary['present'] }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Total Present</p>
+                    <p class="text-xl font-bold text-gray-800 dark:text-white">{{ $summary['present'] }}</p>
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
                     <i class="fas fa-user-times text-red-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Total Absent</p>
-                    <p class="text-xl font-bold text-gray-800">{{ $summary['absent'] }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Total Absent</p>
+                    <p class="text-xl font-bold text-gray-800 dark:text-white">{{ $summary['absent'] }}</p>
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
                     <i class="fas fa-clock text-yellow-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">Half Days</p>
-                    <p class="text-xl font-bold text-gray-800">{{ $summary['half_day'] }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Half Days</p>
+                    <p class="text-xl font-bold text-gray-800 dark:text-white">{{ $summary['half_day'] }}</p>
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
                     <i class="fas fa-umbrella-beach text-blue-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm text-gray-500">On Leave</p>
-                    <p class="text-xl font-bold text-gray-800">{{ $summary['leave'] }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">On Leave</p>
+                    <p class="text-xl font-bold text-gray-800 dark:text-white">{{ $summary['leave'] }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Attendance Table -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100">
-            <h3 class="font-semibold text-gray-800">{{ date('F', mktime(0, 0, 0, $month, 1)) }} {{ $year }} - Employee Wise Summary</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-800 dark:text-white">{{ date('F', mktime(0, 0, 0, $month, 1)) }} {{ $year }} - Employee Wise Summary</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr class="text-left text-sm text-gray-500">
-                        <th class="px-6 py-4 font-medium">Employee</th>
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr class="text-left text-sm text-gray-500 dark:text-gray-400">
+                        <th class="px-6 py-4 font-medium dark:text-white">Employee</th>
                         <th class="px-6 py-4 font-medium text-center">Present</th>
                         <th class="px-6 py-4 font-medium text-center">Absent</th>
                         <th class="px-6 py-4 font-medium text-center">Half Day</th>
@@ -131,21 +131,21 @@
                         <th class="px-6 py-4 font-medium text-center">Attendance %</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @forelse($employeeSummary as $item)
                     @php
                         $totalDays = $item['present'] + $item['absent'] + $item['half_day'] + $item['leave'];
                         $attendancePercent = $totalDays > 0 ? round(($item['present'] + ($item['half_day'] * 0.5)) / $workingDays * 100, 1) : 0;
                     @endphp
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-bold">
                                     {{ strtoupper(substr($item['employee']->name, 0, 1)) }}
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-800">{{ $item['employee']->name }}</p>
-                                    <p class="text-sm text-gray-500">{{ $item['employee']->position }}</p>
+                                    <p class="font-medium text-gray-800 dark:text-white">{{ $item['employee']->name }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item['employee']->position }}</p>
                                 </div>
                             </div>
                         </td>
@@ -171,10 +171,10 @@
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="flex items-center justify-center space-x-2">
-                                <div class="w-24 bg-gray-200 rounded-full h-2">
+                                <div class="w-24 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                                     <div class="bg-primary-500 h-2 rounded-full" style="width: {{ $attendancePercent }}%"></div>
                                 </div>
-                                <span class="text-sm font-medium text-gray-700">{{ $attendancePercent }}%</span>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $attendancePercent }}%</span>
                             </div>
                         </td>
                     </tr>
@@ -182,10 +182,10 @@
                     <tr>
                         <td colspan="6" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center">
-                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                    <i class="fas fa-calendar-times text-gray-400 text-2xl"></i>
+                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-calendar-times text-gray-400 dark:text-gray-500 text-2xl"></i>
                                 </div>
-                                <p class="text-gray-500">No attendance data for this period</p>
+                                <p class="text-gray-500 dark:text-gray-400">No attendance data for this period</p>
                             </div>
                         </td>
                     </tr>
@@ -196,19 +196,19 @@
     </div>
 
     <!-- Daily Breakdown Calendar View -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100">
-            <h3 class="font-semibold text-gray-800">Daily Breakdown</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-800 dark:text-white">Daily Breakdown</h3>
         </div>
         <div class="p-6">
             <div class="grid grid-cols-7 gap-2 mb-4">
-                <div class="text-center text-sm font-medium text-gray-500">Sun</div>
-                <div class="text-center text-sm font-medium text-gray-500">Mon</div>
-                <div class="text-center text-sm font-medium text-gray-500">Tue</div>
-                <div class="text-center text-sm font-medium text-gray-500">Wed</div>
-                <div class="text-center text-sm font-medium text-gray-500">Thu</div>
-                <div class="text-center text-sm font-medium text-gray-500">Fri</div>
-                <div class="text-center text-sm font-medium text-gray-500">Sat</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Sun</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Mon</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Tue</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Wed</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Thu</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Fri</div>
+                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400">Sat</div>
             </div>
             
             @php
@@ -234,10 +234,10 @@
                     @if($dayAttendance)
                     <div class="flex space-x-1 mt-1">
                         @if($dayAttendance['present'] > 0)
-                        <span class="w-2 h-2 bg-green-500 rounded-full" title="Present: {{ $dayAttendance['present'] }}"></span>
+                        <span class="w-2 h-2 bg-green-50 dark:bg-green-900/200 rounded-full" title="Present: {{ $dayAttendance['present'] }}"></span>
                         @endif
                         @if($dayAttendance['absent'] > 0)
-                        <span class="w-2 h-2 bg-red-500 rounded-full" title="Absent: {{ $dayAttendance['absent'] }}"></span>
+                        <span class="w-2 h-2 bg-red-50 dark:bg-red-900/200 rounded-full" title="Absent: {{ $dayAttendance['absent'] }}"></span>
                         @endif
                     </div>
                     @endif
@@ -248,23 +248,23 @@
     </div>
 
     <!-- Legend -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4">
         <div class="flex flex-wrap items-center gap-6">
             <div class="flex items-center space-x-2">
-                <span class="w-4 h-4 bg-green-500 rounded"></span>
-                <span class="text-sm text-gray-600">Present</span>
+                <span class="w-4 h-4 bg-green-50 dark:bg-green-900/200 rounded"></span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Present</span>
             </div>
             <div class="flex items-center space-x-2">
-                <span class="w-4 h-4 bg-red-500 rounded"></span>
-                <span class="text-sm text-gray-600">Absent</span>
+                <span class="w-4 h-4 bg-red-50 dark:bg-red-900/200 rounded"></span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Absent</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-4 h-4 bg-yellow-500 rounded"></span>
-                <span class="text-sm text-gray-600">Half Day</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Half Day</span>
             </div>
             <div class="flex items-center space-x-2">
-                <span class="w-4 h-4 bg-blue-500 rounded"></span>
-                <span class="text-sm text-gray-600">On Leave</span>
+                <span class="w-4 h-4 bg-blue-50 dark:bg-blue-900/200 rounded"></span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">On Leave</span>
             </div>
         </div>
     </div>
