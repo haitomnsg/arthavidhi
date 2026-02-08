@@ -9,9 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bills', function (Blueprint $table) {
-            $table->string('status')->default('active')->after('payment_status'); // active, cancelled
-            $table->text('cancellation_reason')->nullable()->after('status');
-            $table->timestamp('cancelled_at')->nullable()->after('cancellation_reason');
+            if (!Schema::hasColumn('bills', 'status')) {
+                $table->string('status')->default('active')->after('payment_status'); // active, cancelled
+            }
+            if (!Schema::hasColumn('bills', 'cancellation_reason')) {
+                $table->text('cancellation_reason')->nullable()->after('status');
+            }
+            if (!Schema::hasColumn('bills', 'cancelled_at')) {
+                $table->timestamp('cancelled_at')->nullable()->after('cancellation_reason');
+            }
         });
     }
 

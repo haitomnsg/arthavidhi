@@ -34,7 +34,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/company', [CompanyController::class, 'store']);
     Route::put('/company', [CompanyController::class, 'update']);
 
-    // Product Categories
+    // Product Categories — hierarchical tree system
+    Route::get('/product-categories/tree', [ProductCategoryController::class, 'tree']);
+    Route::post('/product-categories/reorder', [ProductCategoryController::class, 'reorder']);
+    Route::patch('/product-categories/{productCategory}/move', [ProductCategoryController::class, 'move']);
+    Route::patch('/product-categories/{productCategory}/toggle-active', [ProductCategoryController::class, 'toggleActive']);
+    Route::get('/product-categories/{productCategory}/descendants', [ProductCategoryController::class, 'descendants']);
+    Route::get('/product-categories/{productCategory}/ancestors', [ProductCategoryController::class, 'ancestors']);
+    Route::get('/product-categories/{productCategory}/products', [ProductCategoryController::class, 'products']);
     Route::apiResource('product-categories', ProductCategoryController::class)->names('api.product-categories');
 
     // Products

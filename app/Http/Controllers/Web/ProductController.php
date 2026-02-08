@@ -43,7 +43,8 @@ class ProductController extends Controller
         }
 
         $products = $query->latest()->paginate(15)->withQueryString();
-        $categories = ProductCategory::where('company_id', $companyId)->get();
+        $categories = ProductCategory::where('company_id', $companyId)
+            ->orderBy('level')->orderBy('sort_order')->orderBy('name')->get();
 
         // Stats
         $totalProducts = Product::where('company_id', $companyId)->count();
@@ -57,7 +58,8 @@ class ProductController extends Controller
     public function create()
     {
         $companyId = auth()->user()->company_id;
-        $categories = ProductCategory::where('company_id', $companyId)->get();
+        $categories = ProductCategory::where('company_id', $companyId)
+            ->orderBy('level')->orderBy('sort_order')->orderBy('name')->get();
         return view('products.form', compact('categories'));
     }
 
@@ -129,7 +131,8 @@ class ProductController extends Controller
     {
         $this->authorizeAccess($product);
         $companyId = auth()->user()->company_id;
-        $categories = ProductCategory::where('company_id', $companyId)->get();
+        $categories = ProductCategory::where('company_id', $companyId)
+            ->orderBy('level')->orderBy('sort_order')->orderBy('name')->get();
         return view('products.form', compact('product', 'categories'));
     }
 

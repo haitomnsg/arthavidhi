@@ -76,7 +76,7 @@
                     <option value="">All Categories</option>
                     @foreach($categories as $category)
                     <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
+                        {{ str_repeat('— ', $category->level) }}{{ $category->name }}
                     </option>
                     @endforeach
                 </select>

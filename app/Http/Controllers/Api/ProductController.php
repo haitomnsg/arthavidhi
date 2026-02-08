@@ -18,9 +18,23 @@ class ProductController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Filter by category
-        if ($request->has('category_id') && $request->category_id) {
-            $query->where('category_id', $request->category_id);
+        // Filter by category (with optional subcategory inclusion)
+        if ($request->filled('category_id')) {
+            if ($request->boolean('include_subcategories')) {
+                // Get all descendant category IDs + the selected category itself
+                $category = \App\Models\ProductCategory::find($request->category_id);
+                if ($category) {
+                    $categoryIds = array_merge([$category->id], $category->getAllDescendantIds());
+                    $query->whereIn('category_id', $categoryIds);
+                }
+            } else {
+                $query->where('category_id', $request->category_id);
+            }
+        }
+
+        // Filter by uncategorized products
+        if ($request->boolean('uncategorized')) {
+            $query->whereNull('category_id');
         }
 
         $products = $query->orderBy('name')->paginate($request->per_page ?? 15);
