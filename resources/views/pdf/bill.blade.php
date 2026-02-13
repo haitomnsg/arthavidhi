@@ -275,10 +275,17 @@
                             @if($company->phone)Phone: {{ $company->phone }}@endif
                             @if($company->phone && $company->email) | @endif
                             @if($company->email){{ $company->email }}@endif
-                            @if($company->pan_number || $company->vat_number)<br>@endif
-                            @if($company->pan_number)PAN: {{ $company->pan_number }}@endif
-                            @if($company->pan_number && $company->vat_number) | @endif
-                            @if($company->vat_number)VAT: {{ $company->vat_number }}@endif
+                            @php $taxSystem = $company->settings['tax_system'] ?? null; @endphp
+                            @if($taxSystem === 'pan' && $company->panNumber)
+                                <br>PAN: {{ $company->panNumber }}
+                            @elseif($taxSystem === 'vat' && $company->vatNumber)
+                                <br>VAT: {{ $company->vatNumber }}
+                            @else
+                                @if($company->pan_number || $company->vat_number)<br>@endif
+                                @if($company->pan_number)PAN: {{ $company->pan_number }}@endif
+                                @if($company->pan_number && $company->vat_number) | @endif
+                                @if($company->vat_number)VAT: {{ $company->vat_number }}@endif
+                            @endif
                         </div>
                     @else
                         <div class="company-name">ArthaVidhi</div>
@@ -373,7 +380,7 @@
                         @endif
                         @if($bill->tax_amount > 0)
                         <tr>
-                            <td class="label">Tax:</td>
+                            <td class="label">{{ ($company->settings['tax_system'] ?? '') === 'vat' ? 'VAT (13%):' : 'Tax:' }}</td>
                             <td class="value">Rs. {{ number_format($bill->tax_amount, 2) }}</td>
                         </tr>
                         @endif

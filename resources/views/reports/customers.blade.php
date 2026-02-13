@@ -82,11 +82,15 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Top 10 Customers by Revenue</h3>
-            <canvas id="topCustomersChart" height="200"></canvas>
+            <div style="height: 280px;">
+                <canvas id="topCustomersChart"></canvas>
+            </div>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">New vs Returning Customers</h3>
-            <canvas id="customerTypeChart" height="200"></canvas>
+            <div style="height: 280px;">
+                <canvas id="customerTypeChart"></canvas>
+            </div>
         </div>
     </div>
 
@@ -238,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         options: {
             indexAxis: 'y',
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false
@@ -269,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom'

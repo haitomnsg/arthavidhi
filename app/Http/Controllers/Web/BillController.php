@@ -264,19 +264,25 @@ class BillController extends Controller
         $companyId = auth()->user()->company_id;
         $products = Product::where('company_id', $companyId)->where('is_active', true)->get();
         $nextBillNumber = $this->generateBillNumber();
+        $bill->load('items');
         
-        // Create a copy for the form
-        $newBill = $bill->replicate();
-        $newBill->bill_number = $nextBillNumber;
-        $newBill->bill_date = now();
-        $newBill->payment_status = 'unpaid';
-        $newBill->paid_amount = 0;
+        $billItems = $bill->items->map(function($item) {
+            return [
+                'product_id' => $item->product_id,
+                'product_name' => $item->product_name,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->unit_price,
+                'tax_rate' => $item->tax_rate,
+                'total' => $item->total
+            ];
+        })->toArray();
         
         return view('bills.form', [
-            'bill' => $newBill,
             'products' => $products,
             'nextBillNumber' => $nextBillNumber,
+            'billItems' => $billItems,
             'isDuplicate' => true,
+            'duplicateFrom' => $bill,
         ]);
     }
 

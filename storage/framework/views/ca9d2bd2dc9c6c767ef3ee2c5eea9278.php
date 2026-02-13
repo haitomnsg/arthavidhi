@@ -1,14 +1,14 @@
-{{-- Check if we're inside a tab iframe --}}
-@php $isInTab = request()->get('_tab') == '1'; @endphp
 
-@if($isInTab)
+<?php $isInTab = request()->get('_tab') == '1'; ?>
+
+<?php if($isInTab): ?>
 <!DOCTYPE html>
 <html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'ArthaVidhi')</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'ArthaVidhi'); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -42,35 +42,35 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     <div class="p-6">
-        @if(session('success'))
+        <?php if(session('success')): ?>
         <div class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 rounded-lg" x-data="{ show: true }" x-show="show">
             <div class="flex items-center justify-between">
-                <span>{{ session('success') }}</span>
+                <span><?php echo e(session('success')); ?></span>
                 <button @click="show = false" class="text-green-700 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300">&times;</button>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
-        @if(session('error'))
+        <?php if(session('error')): ?>
         <div class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg" x-data="{ show: true }" x-show="show">
             <div class="flex items-center justify-between">
-                <span>{{ session('error') }}</span>
+                <span><?php echo e(session('error')); ?></span>
                 <button @click="show = false" class="text-red-700 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">&times;</button>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
-        @if($errors->any())
+        <?php if($errors->any()): ?>
         <div class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg">
             <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-        @endif
+        <?php endif; ?>
 
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </div>
 
     <script>
@@ -170,17 +170,17 @@
         });
     </script>
 
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
-@else
+<?php else: ?>
 <!DOCTYPE html>
 <html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'ArthaVidhi') - Billing & Management</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'ArthaVidhi'); ?> - Billing & Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -317,7 +317,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200">
-    @auth
+    <?php if(auth()->guard()->check()): ?>
     <div class="flex min-h-screen" x-data="tabManager()" x-init="init()">
         <!-- Sidebar -->
         <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col fixed h-full z-30 transition-transform duration-300"
@@ -336,10 +336,10 @@
 
             <!-- Navigation -->
             <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-                <a href="{{ route('dashboard') }}" 
-                   @click.prevent="openTab('{{ route('dashboard') }}', 'Dashboard', 'fa-th-large')"
+                <a href="<?php echo e(route('dashboard')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('dashboard')); ?>', 'Dashboard', 'fa-th-large')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('dashboard') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('dashboard')); ?>') }">
                     <i class="fas fa-th-large w-5"></i>
                     <span>Dashboard</span>
                 </a>
@@ -347,31 +347,31 @@
                 <div class="pt-4 pb-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Sales</p>
                 </div>
-                <a href="{{ route('bills.create') }}" 
-                   @click.prevent="openTab('{{ route('bills.create') }}', 'Create Bill', 'fa-plus-circle')"
+                <a href="<?php echo e(route('bills.create')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('bills.create')); ?>', 'Create Bill', 'fa-plus-circle')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('bills.create') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('bills.create')); ?>') }">
                     <i class="fas fa-plus-circle w-5"></i>
                     <span>Create Bill</span>
                 </a>
-                <a href="{{ route('bills.index') }}" 
-                   @click.prevent="openTab('{{ route('bills.index') }}', 'Find Bills', 'fa-list')"
+                <a href="<?php echo e(route('bills.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('bills.index')); ?>', 'Find Bills', 'fa-list')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('bills.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('bills.index')); ?>') }">
                     <i class="fas fa-list w-5"></i>
                     <span>Find Bills</span>
                 </a>
-                <a href="{{ route('quotations.create') }}" 
-                   @click.prevent="openTab('{{ route('quotations.create') }}', 'Create Quotation', 'fa-plus-circle')"
+                <a href="<?php echo e(route('quotations.create')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('quotations.create')); ?>', 'Create Quotation', 'fa-plus-circle')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('quotations.create') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('quotations.create')); ?>') }">
                     <i class="fas fa-plus-circle w-5"></i>
                     <span>Create Quotation</span>
                 </a>
-                <a href="{{ route('quotations.index') }}" 
-                   @click.prevent="openTab('{{ route('quotations.index') }}', 'Find Quotations', 'fa-list')"
+                <a href="<?php echo e(route('quotations.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('quotations.index')); ?>', 'Find Quotations', 'fa-list')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('quotations.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('quotations.index')); ?>') }">
                     <i class="fas fa-list w-5"></i>
                     <span>Find Quotations</span>
                 </a>
@@ -379,24 +379,24 @@
                 <div class="pt-4 pb-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Inventory</p>
                 </div>
-                <a href="{{ route('products.index') }}" 
-                   @click.prevent="openTab('{{ route('products.index') }}', 'Products', 'fa-box')"
+                <a href="<?php echo e(route('products.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('products.index')); ?>', 'Products', 'fa-box')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('products.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('products.index')); ?>') }">
                     <i class="fas fa-box w-5"></i>
                     <span>Products</span>
                 </a>
-                <a href="{{ route('categories.index') }}" 
-                   @click.prevent="openTab('{{ route('categories.index') }}', 'Categories', 'fa-folder')"
+                <a href="<?php echo e(route('categories.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('categories.index')); ?>', 'Categories', 'fa-folder')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('categories.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('categories.index')); ?>') }">
                     <i class="fas fa-folder w-5"></i>
                     <span>Categories</span>
                 </a>
-                <a href="{{ route('purchases.index') }}" 
-                   @click.prevent="openTab('{{ route('purchases.index') }}', 'Purchases', 'fa-shopping-cart')"
+                <a href="<?php echo e(route('purchases.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('purchases.index')); ?>', 'Purchases', 'fa-shopping-cart')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('purchases.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('purchases.index')); ?>') }">
                     <i class="fas fa-shopping-cart w-5"></i>
                     <span>Purchases</span>
                 </a>
@@ -404,17 +404,17 @@
                 <div class="pt-4 pb-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Finance</p>
                 </div>
-                <a href="{{ route('expenses.index') }}" 
-                   @click.prevent="openTab('{{ route('expenses.index') }}', 'Expenses', 'fa-wallet')"
+                <a href="<?php echo e(route('expenses.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('expenses.index')); ?>', 'Expenses', 'fa-wallet')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('expenses.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('expenses.index')); ?>') }">
                     <i class="fas fa-wallet w-5"></i>
                     <span>Expenses</span>
                 </a>
-                <a href="{{ route('incomes.index') }}" 
-                   @click.prevent="openTab('{{ route('incomes.index') }}', 'Income', 'fa-hand-holding-usd')"
+                <a href="<?php echo e(route('incomes.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('incomes.index')); ?>', 'Income', 'fa-hand-holding-usd')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('incomes.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('incomes.index')); ?>') }">
                     <i class="fas fa-hand-holding-usd w-5"></i>
                     <span>Income</span>
                 </a>
@@ -422,38 +422,38 @@
                 <div class="pt-4 pb-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">HR</p>
                 </div>
-                <a href="{{ route('employees.index') }}" 
-                   @click.prevent="openTab('{{ route('employees.index') }}', 'Employees', 'fa-users')"
+                <a href="<?php echo e(route('employees.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('employees.index')); ?>', 'Employees', 'fa-users')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('employees.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('employees.index')); ?>') }">
                     <i class="fas fa-users w-5"></i>
                     <span>Employees</span>
                 </a>
-                <a href="{{ route('salaries.index') }}" 
-                   @click.prevent="openTab('{{ route('salaries.index') }}', 'Salaries', 'fa-money-check-alt')"
+                <a href="<?php echo e(route('salaries.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('salaries.index')); ?>', 'Salaries', 'fa-money-check-alt')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('salaries.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('salaries.index')); ?>') }">
                     <i class="fas fa-money-check-alt w-5"></i>
                     <span>Salaries</span>
                 </a>
-                <a href="{{ route('departments.index') }}" 
-                   @click.prevent="openTab('{{ route('departments.index') }}', 'Departments', 'fa-building')"
+                <a href="<?php echo e(route('departments.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('departments.index')); ?>', 'Departments', 'fa-building')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('departments.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('departments.index')); ?>') }">
                     <i class="fas fa-building w-5"></i>
                     <span>Departments</span>
                 </a>
-                <a href="{{ route('shifts.index') }}" 
-                   @click.prevent="openTab('{{ route('shifts.index') }}', 'Shifts', 'fa-clock')"
+                <a href="<?php echo e(route('shifts.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('shifts.index')); ?>', 'Shifts', 'fa-clock')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('shifts.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('shifts.index')); ?>') }">
                     <i class="fas fa-clock w-5"></i>
                     <span>Shifts</span>
                 </a>
-                <a href="{{ route('attendance.index') }}" 
-                   @click.prevent="openTab('{{ route('attendance.index') }}', 'Attendance', 'fa-calendar-check')"
+                <a href="<?php echo e(route('attendance.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('attendance.index')); ?>', 'Attendance', 'fa-calendar-check')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('attendance.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('attendance.index')); ?>') }">
                     <i class="fas fa-calendar-check w-5"></i>
                     <span>Attendance</span>
                 </a>
@@ -461,59 +461,59 @@
                 <div class="pt-4 pb-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Reports</p>
                 </div>
-                <a href="{{ route('reports.index') }}" 
-                   @click.prevent="openTab('{{ route('reports.index') }}', 'Reports Dashboard', 'fa-chart-bar')"
+                <a href="<?php echo e(route('reports.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.index')); ?>', 'Reports Dashboard', 'fa-chart-bar')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('reports.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.index')); ?>') }">
                     <i class="fas fa-tachometer-alt w-5"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="{{ route('reports.sales') }}" 
-                   @click.prevent="openTab('{{ route('reports.sales') }}', 'Sales Report', 'fa-chart-line')"
+                <a href="<?php echo e(route('reports.sales')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.sales')); ?>', 'Sales Report', 'fa-chart-line')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.sales') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.sales')); ?>') }">
                     <i class="fas fa-chart-line w-5 text-xs"></i>
                     <span>Sales Report</span>
                 </a>
-                <a href="{{ route('reports.inventory') }}" 
-                   @click.prevent="openTab('{{ route('reports.inventory') }}', 'Inventory Report', 'fa-boxes')"
+                <a href="<?php echo e(route('reports.inventory')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.inventory')); ?>', 'Inventory Report', 'fa-boxes')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.inventory') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.inventory')); ?>') }">
                     <i class="fas fa-boxes w-5 text-xs"></i>
                     <span>Inventory Report</span>
                 </a>
-                <a href="{{ route('reports.expenses') }}" 
-                   @click.prevent="openTab('{{ route('reports.expenses') }}', 'Expense Report', 'fa-receipt')"
+                <a href="<?php echo e(route('reports.expenses')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.expenses')); ?>', 'Expense Report', 'fa-receipt')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.expenses') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.expenses')); ?>') }">
                     <i class="fas fa-receipt w-5 text-xs"></i>
                     <span>Expense Report</span>
                 </a>
-                <a href="{{ route('reports.profit-loss') }}" 
-                   @click.prevent="openTab('{{ route('reports.profit-loss') }}', 'Profit & Loss', 'fa-balance-scale')"
+                <a href="<?php echo e(route('reports.profit-loss')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.profit-loss')); ?>', 'Profit & Loss', 'fa-balance-scale')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.profit-loss') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.profit-loss')); ?>') }">
                     <i class="fas fa-balance-scale w-5 text-xs"></i>
                     <span>Profit & Loss</span>
                 </a>
-                <a href="{{ route('reports.customers') }}" 
-                   @click.prevent="openTab('{{ route('reports.customers') }}', 'Customer Report', 'fa-user-friends')"
+                <a href="<?php echo e(route('reports.customers')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.customers')); ?>', 'Customer Report', 'fa-user-friends')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.customers') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.customers')); ?>') }">
                     <i class="fas fa-user-friends w-5 text-xs"></i>
                     <span>Customer Report</span>
                 </a>
-                <a href="{{ route('reports.tax') }}" 
-                   @click.prevent="openTab('{{ route('reports.tax') }}', 'Tax Report', 'fa-file-invoice-dollar')"
+                <a href="<?php echo e(route('reports.tax')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.tax')); ?>', 'Tax Report', 'fa-file-invoice-dollar')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.tax') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.tax')); ?>') }">
                     <i class="fas fa-file-invoice-dollar w-5 text-xs"></i>
                     <span>Tax Report</span>
                 </a>
-                <a href="{{ route('reports.employees') }}" 
-                   @click.prevent="openTab('{{ route('reports.employees') }}', 'Employee Report', 'fa-user-tie')"
+                <a href="<?php echo e(route('reports.employees')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('reports.employees')); ?>', 'Employee Report', 'fa-user-tie')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 text-sm"
-                   :class="{ 'active': isTabActive('{{ route('reports.employees') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('reports.employees')); ?>') }">
                     <i class="fas fa-user-tie w-5 text-xs"></i>
                     <span>Employee Report</span>
                 </a>
@@ -521,15 +521,15 @@
 
             <!-- User Section -->
             <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-                <a href="{{ route('settings.index') }}" 
-                   @click.prevent="openTab('{{ route('settings.index') }}', 'Settings', 'fa-cog')"
+                <a href="<?php echo e(route('settings.index')); ?>" 
+                   @click.prevent="openTab('<?php echo e(route('settings.index')); ?>', 'Settings', 'fa-cog')"
                    class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
-                   :class="{ 'active': isTabActive('{{ route('settings.index') }}') }">
+                   :class="{ 'active': isTabActive('<?php echo e(route('settings.index')); ?>') }">
                     <i class="fas fa-cog w-5"></i>
                     <span>Settings</span>
                 </a>
-                <form action="{{ route('logout') }}" method="POST" class="mt-2">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST" class="mt-2">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400">
                         <i class="fas fa-sign-out-alt w-5"></i>
                         <span>Logout</span>
@@ -547,7 +547,8 @@
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                     <span class="text-lg font-semibold text-gray-800 dark:text-white truncate max-w-xs">
-                        {{ auth()->user()->company->name ?? 'My Company' }}
+                        <?php echo e(auth()->user()->company->name ?? 'My Company'); ?>
+
                     </span>
                 </div>
                 <div class="flex items-center gap-4">
@@ -587,7 +588,7 @@
                                 </template>
                             </div>
                             <div class="px-4 py-2 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-                                <a href="{{ route('dashboard') }}" class="text-xs text-primary-500 hover:underline">View Dashboard</a>
+                                <a href="<?php echo e(route('dashboard')); ?>" class="text-xs text-primary-500 hover:underline">View Dashboard</a>
                             </div>
                         </div>
                     </div>
@@ -597,9 +598,9 @@
                         <i class="fas fa-moon text-lg" x-show="!darkMode"></i>
                         <i class="fas fa-sun text-lg text-yellow-400" x-show="darkMode" x-cloak></i>
                     </button>
-                    <span class="text-gray-600 dark:text-gray-300">{{ auth()->user()->name }}</span>
+                    <span class="text-gray-600 dark:text-gray-300"><?php echo e(auth()->user()->name); ?></span>
                     <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
-                        <span class="text-primary-600 dark:text-primary-400 font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                        <span class="text-primary-600 dark:text-primary-400 font-medium"><?php echo e(substr(auth()->user()->name, 0, 1)); ?></span>
                     </div>
                 </div>
             </header>
@@ -615,7 +616,7 @@
                             <span class="tab-title text-sm text-gray-700 dark:text-gray-300" x-text="tab.title"></span>
                             <button class="tab-close text-gray-400" 
                                     @click.stop="closeTab(tab.id)"
-                                    x-show="tabs.length > 1 || tab.url !== '{{ route('dashboard') }}'">
+                                    x-show="tabs.length > 1 || tab.url !== '<?php echo e(route('dashboard')); ?>'">
                                 <i class="fas fa-times text-xs"></i>
                             </button>
                         </div>
@@ -636,35 +637,35 @@
             <div class="flex-1 relative">
                 <!-- Embedded Content (for current page when no tabs) -->
                 <div class="tab-content p-6" :class="{ 'active': !useTabbedMode }">
-                    @if(session('success'))
+                    <?php if(session('success')): ?>
                     <div class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 rounded-lg" x-data="{ show: true }" x-show="show">
                         <div class="flex items-center justify-between">
-                            <span>{{ session('success') }}</span>
+                            <span><?php echo e(session('success')); ?></span>
                             <button @click="show = false" class="text-green-700 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300">&times;</button>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @if(session('error'))
+                    <?php if(session('error')): ?>
                     <div class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg" x-data="{ show: true }" x-show="show">
                         <div class="flex items-center justify-between">
-                            <span>{{ session('error') }}</span>
+                            <span><?php echo e(session('error')); ?></span>
                             <button @click="show = false" class="text-red-700 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">&times;</button>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @if($errors->any())
+                    <?php if($errors->any()): ?>
                     <div class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg">
                         <ul class="list-disc list-inside">
-                            @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @yield('content')
+                    <?php echo $__env->yieldContent('content'); ?>
                 </div>
 
                 <!-- Tabbed Iframe Content -->
@@ -683,9 +684,9 @@
             </div>
         </main>
     </div>
-    @else
-    @yield('content')
-    @endauth
+    <?php else: ?>
+    <?php echo $__env->yieldContent('content'); ?>
+    <?php endif; ?>
 
     <script>
         function tabManager() {
@@ -774,7 +775,7 @@
                         this.useTabbedMode = false;
                         this.activeTabId = null;
                         // Redirect to dashboard
-                        window.location.href = '{{ route('dashboard') }}';
+                        window.location.href = '<?php echo e(route('dashboard')); ?>';
                     } else if (this.activeTabId === tabId) {
                         // Switch to adjacent tab
                         const newIndex = Math.min(tabIndex, this.tabs.length - 1);
@@ -791,7 +792,7 @@
                         this.activeTabId = null;
                         sessionStorage.removeItem('arthavidhi_tabs');
                         sessionStorage.removeItem('arthavidhi_active_tab');
-                        window.location.href = '{{ route('dashboard') }}';
+                        window.location.href = '<?php echo e(route('dashboard')); ?>';
                     }
                 },
 
@@ -833,7 +834,7 @@
                 async fetchNotifications() {
                     this.loading = true;
                     try {
-                        const response = await fetch('{{ route("notifications.data") }}');
+                        const response = await fetch('<?php echo e(route("notifications.data")); ?>');
                         const data = await response.json();
                         this.notifications = data.notifications || [];
                         this.totalCount = data.totalCount || 0;
@@ -854,7 +855,8 @@
         }
     </script>
 
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
-@endif
+<?php endif; ?>
+<?php /**PATH D:\billing\resources\views/layouts/app.blade.php ENDPATH**/ ?>

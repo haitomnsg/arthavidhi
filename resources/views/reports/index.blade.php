@@ -186,6 +186,19 @@
                 </div>
             </div>
         </a>
+
+        <!-- Employee Report -->
+        <a href="{{ route('reports.employees') }}" class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:border-primary-200 transition-all group">
+            <div class="flex items-center space-x-4">
+                <div class="w-14 h-14 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center group-hover:bg-teal-200 transition-colors">
+                    <i class="fas fa-user-tie text-teal-600 text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Employee Report</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Workforce & attendance analytics</p>
+                </div>
+            </div>
+        </a>
     </div>
 
     <!-- Recent Transactions -->

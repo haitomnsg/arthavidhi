@@ -8,6 +8,9 @@ use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\ProductCategory;
+use App\Models\Employee;
+use App\Models\Department;
+use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -1412,5 +1415,148 @@ class ReportController extends Controller
         }
         
         return [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()];
+    }
+
+    // ==========================================
+    // EMPLOYEE REPORT
+    // ==========================================
+
+    public function employees(Request $request)
+    {
+        $companyId = auth()->user()->company_id;
+        $month = $request->month ? Carbon::parse($request->month . '-01') : Carbon::now();
+        $monthStart = $month->copy()->startOfMonth();
+        $monthEnd = $month->copy()->endOfMonth();
+
+        $query = Employee::where('company_id', $companyId)->with(['departmentModel', 'shift']);
+
+        if ($request->department_id) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        if ($request->status) {
+            $query->where('is_active', $request->status === 'active');
+        }
+
+        // Get attendance counts per employee for the month
+        $attendanceCounts = Attendance::whereHas('employee', function ($q) use ($companyId) {
+                $q->where('company_id', $companyId);
+            })
+            ->whereBetween('date', [$monthStart, $monthEnd])
+            ->select(
+                'employee_id',
+                DB::raw("SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present_days"),
+                DB::raw("SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) as absent_days"),
+                DB::raw("SUM(CASE WHEN status = 'leave' THEN 1 ELSE 0 END) as leave_days")
+            )
+            ->groupBy('employee_id')
+            ->get()
+            ->keyBy('employee_id');
+
+        $allEmployees = $query->get();
+
+        // Attach attendance data to employees
+        $allEmployees->each(function ($emp) use ($attendanceCounts) {
+            $att = $attendanceCounts->get($emp->id);
+            $emp->present_days = $att ? $att->present_days : 0;
+            $emp->absent_days = $att ? $att->absent_days : 0;
+            $emp->leave_days = $att ? $att->leave_days : 0;
+        });
+
+        // Summary
+        $totalEmployees = $allEmployees->count();
+        $activeEmployees = $allEmployees->where('is_active', true)->count();
+        $inactiveEmployees = $totalEmployees - $activeEmployees;
+        $totalMonthlySalary = $allEmployees->where('is_active', true)->sum('salary');
+
+        // Attendance summary for the month
+        $totalPresent = $attendanceCounts->sum('present_days');
+        $totalAbsent = $attendanceCounts->sum('absent_days');
+        $totalLeave = $attendanceCounts->sum('leave_days');
+        $totalAttRecords = $totalPresent + $totalAbsent + $totalLeave;
+        $avgAttendance = $totalAttRecords > 0 ? round(($totalPresent / $totalAttRecords) * 100, 1) : 0;
+
+        $summary = [
+            'total_employees' => $totalEmployees,
+            'active_employees' => $activeEmployees,
+            'inactive_employees' => $inactiveEmployees,
+            'total_monthly_salary' => $totalMonthlySalary,
+            'avg_attendance' => $avgAttendance,
+        ];
+
+        // Department breakdown
+        $departments = Department::where('company_id', $companyId)->where('is_active', true)->get();
+        $departmentBreakdown = [];
+        foreach ($departments as $dept) {
+            $deptEmployees = $allEmployees->where('department_id', $dept->id);
+            $departmentBreakdown[] = [
+                'name' => $dept->name,
+                'total' => $deptEmployees->count(),
+                'active' => $deptEmployees->where('is_active', true)->count(),
+                'total_salary' => $deptEmployees->where('is_active', true)->sum('salary'),
+                'avg_salary' => $deptEmployees->where('is_active', true)->count() > 0
+                    ? $deptEmployees->where('is_active', true)->avg('salary') : 0,
+            ];
+        }
+
+        // Unassigned employees
+        $unassigned = $allEmployees->whereNull('department_id');
+        if ($unassigned->count() > 0) {
+            $departmentBreakdown[] = [
+                'name' => 'Unassigned',
+                'total' => $unassigned->count(),
+                'active' => $unassigned->where('is_active', true)->count(),
+                'total_salary' => $unassigned->where('is_active', true)->sum('salary'),
+                'avg_salary' => $unassigned->where('is_active', true)->count() > 0
+                    ? $unassigned->where('is_active', true)->avg('salary') : 0,
+            ];
+        }
+
+        // Chart data
+        $deptChartData = [
+            'labels' => collect($departmentBreakdown)->pluck('name')->toArray(),
+            'values' => collect($departmentBreakdown)->pluck('total')->toArray(),
+        ];
+
+        $attendanceData = [
+            'present' => $totalPresent,
+            'absent' => $totalAbsent,
+            'leave' => $totalLeave,
+        ];
+
+        // Paginate employees
+        $employees = $query->latest()->paginate(20)->withQueryString();
+        // Attach attendance data to paginated employees too
+        $employees->each(function ($emp) use ($attendanceCounts) {
+            $att = $attendanceCounts->get($emp->id);
+            $emp->present_days = $att ? $att->present_days : 0;
+            $emp->absent_days = $att ? $att->absent_days : 0;
+        });
+
+        return view('reports.employees', compact(
+            'employees', 'summary', 'departmentBreakdown', 'departments',
+            'deptChartData', 'attendanceData'
+        ));
+    }
+
+    public function employeesPdf(Request $request)
+    {
+        $companyId = auth()->user()->company_id;
+        $company = auth()->user()->company;
+        $month = $request->month ? Carbon::parse($request->month . '-01') : Carbon::now();
+
+        $employees = Employee::where('company_id', $companyId)
+            ->with('departmentModel')
+            ->get();
+
+        $summary = [
+            'total_employees' => $employees->count(),
+            'active_employees' => $employees->where('is_active', true)->count(),
+            'total_monthly_salary' => $employees->where('is_active', true)->sum('salary'),
+        ];
+
+        $pdf = Pdf::loadView('pdf.employee-report', compact('company', 'employees', 'summary', 'month'));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->download('employee-report-' . $month->format('Y-m') . '.pdf');
     }
 }

@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
-@section('title', isset($bill) ? 'Edit Bill' : 'Create Bill')
+@section('title', isset($bill) && !isset($isDuplicate) ? 'Edit Bill' : 'Create Bill')
 
 @section('content')
 <div class="space-y-6" x-data="billForm()">
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ isset($bill) ? 'Edit Bill' : 'Create New Bill' }}</h1>
-            <p class="text-gray-500 dark:text-gray-400">{{ isset($bill) ? 'Update bill details' : 'Create a new sales invoice' }}</p>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ isset($isDuplicate) ? 'Duplicate Bill' : (isset($bill) ? 'Edit Bill' : 'Create New Bill') }}</h1>
+            <p class="text-gray-500 dark:text-gray-400">{{ isset($isDuplicate) ? 'Create a new bill from existing' : (isset($bill) ? 'Update bill details' : 'Create a new sales invoice') }}</p>
         </div>
         <a href="{{ route('bills.index') }}" class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-white">
             <i class="fas fa-arrow-left mr-2"></i> Back to Bills
         </a>
     </div>
 
-    <form action="{{ isset($bill) ? route('bills.update', $bill) : route('bills.store') }}" method="POST" class="space-y-6">
+    <form action="{{ isset($bill) && !isset($isDuplicate) ? route('bills.update', $bill) : route('bills.store') }}" method="POST" class="space-y-6">
         @csrf
-        @if(isset($bill))
+        @if(isset($bill) && !isset($isDuplicate))
         @method('PUT')
         @endif
 
@@ -27,7 +27,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Customer Name *</label>
-                    <input type="text" name="customer_name" value="{{ old('customer_name', $bill->customer_name ?? '') }}" required
+                    <input type="text" name="customer_name" value="{{ old('customer_name', $duplicateFrom->customer_name ?? $bill->customer_name ?? '') }}" required
                            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                            placeholder="Enter customer name">
                     @error('customer_name')
@@ -36,13 +36,13 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone</label>
-                    <input type="tel" name="customer_phone" value="{{ old('customer_phone', $bill->customer_phone ?? '') }}"
+                    <input type="tel" name="customer_phone" value="{{ old('customer_phone', $duplicateFrom->customer_phone ?? $bill->customer_phone ?? '') }}"
                            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                            placeholder="Phone number">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                    <input type="email" name="customer_email" value="{{ old('customer_email', $bill->customer_email ?? '') }}"
+                    <input type="email" name="customer_email" value="{{ old('customer_email', $duplicateFrom->customer_email ?? $bill->customer_email ?? '') }}"
                            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                            placeholder="Email address">
                 </div>
@@ -50,7 +50,7 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Address</label>
                     <textarea name="customer_address" rows="2"
                               class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                              placeholder="Customer address">{{ old('customer_address', $bill->customer_address ?? '') }}</textarea>
+                              placeholder="Customer address">{{ old('customer_address', $duplicateFrom->customer_address ?? $bill->customer_address ?? '') }}</textarea>
                 </div>
             </div>
         </div>
@@ -153,7 +153,7 @@
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Notes</h3>
                 <textarea name="notes" rows="4"
                           class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                          placeholder="Add any notes or terms...">{{ old('notes', $bill->notes ?? '') }}</textarea>
+                          placeholder="Add any notes or terms...">{{ old('notes', $duplicateFrom->notes ?? $bill->notes ?? '') }}</textarea>
             </div>
 
             <!-- Totals -->
@@ -206,7 +206,7 @@
                 Cancel
             </a>
             <button type="submit" class="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
-                <i class="fas fa-save mr-2"></i> {{ isset($bill) ? 'Update Bill' : 'Create Bill' }}
+                <i class="fas fa-save mr-2"></i> {{ isset($bill) && !isset($isDuplicate) ? 'Update Bill' : 'Create Bill' }}
             </button>
         </div>
     </form>

@@ -94,4 +94,43 @@ class SettingsController extends Controller
 
         return back()->with('success', 'Password changed successfully.');
     }
+
+    public function updateCategoryLabels(Request $request)
+    {
+        $company = auth()->user()->company;
+        
+        $labels = [];
+        foreach ($request->input('level_labels', []) as $level => $label) {
+            if (!empty(trim($label))) {
+                $labels[(int)$level] = trim($label);
+            }
+        }
+
+        $company->update([
+            'category_level_labels' => $labels,
+        ]);
+
+        return back()->with('success', 'Category level labels updated successfully.');
+    }
+
+    public function updateTaxSystem(Request $request)
+    {
+        $validated = $request->validate([
+            'tax_system' => 'required|in:none,pan,vat',
+            'panNumber' => 'nullable|string|max:50',
+            'vatNumber' => 'nullable|string|max:50',
+        ]);
+
+        $company = auth()->user()->company;
+        $settings = $company->settings ?? [];
+        $settings['tax_system'] = $validated['tax_system'];
+
+        $company->update([
+            'settings' => $settings,
+            'panNumber' => $validated['panNumber'],
+            'vatNumber' => $validated['vatNumber'],
+        ]);
+
+        return back()->with('success', 'Tax system settings updated successfully.');
+    }
 }

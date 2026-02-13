@@ -35,7 +35,7 @@
             </h1>
             <p class="text-gray-500 dark:text-gray-400">
                 @if($parent)
-                    Subcategories of {{ $parent->name }} &middot; Level {{ $parent->level + 1 }}
+                    Subcategories of {{ $parent->name }} &middot; {{ $levelLabels[$parent->level + 1] ?? 'Level ' . ($parent->level + 1) }}
                 @else
                     Organize your products into hierarchical categories
                 @endif
@@ -147,7 +147,7 @@
                         </span>
                     @endif
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-                        Level {{ $cat->level }}
+                        {{ $levelLabels[$cat->level] ?? 'Level ' . $cat->level }}
                     </span>
                 </div>
 

@@ -50,7 +50,11 @@ class CategoryController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('categories.index', compact('categories', 'parent', 'breadcrumb', 'allCategories'));
+        // Get custom level labels
+        $company = auth()->user()->company;
+        $levelLabels = $company->category_level_labels ?? [];
+
+        return view('categories.index', compact('categories', 'parent', 'breadcrumb', 'allCategories', 'levelLabels'));
     }
 
     public function store(Request $request)

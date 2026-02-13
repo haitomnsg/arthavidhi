@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/notifications/data', [DashboardController::class, 'notificationsData'])->name('notifications.data');
     
     // Bills
     Route::resource('bills', BillController::class)->except(['destroy']);
@@ -100,6 +101,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profit-loss', [ReportController::class, 'profitLoss'])->name('profit-loss');
         Route::get('/customers', [ReportController::class, 'customers'])->name('customers');
         Route::get('/tax', [ReportController::class, 'tax'])->name('tax');
+        Route::get('/employees', [ReportController::class, 'employees'])->name('employees');
 
         // Excel exports
         Route::get('/sales/excel', [ReportController::class, 'salesExcel'])->name('sales.excel');
@@ -108,6 +110,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profit-loss/excel', [ReportController::class, 'profitLossExcel'])->name('profit-loss.excel');
         Route::get('/customers/excel', [ReportController::class, 'customersExcel'])->name('customers.excel');
         Route::get('/tax/excel', [ReportController::class, 'taxExcel'])->name('tax.excel');
+        Route::get('/employees/pdf', [ReportController::class, 'employeesPdf'])->name('employees.pdf');
 
         // PDF exports
         Route::get('/sales/pdf', [ReportController::class, 'salesPdf'])->name('sales.pdf');
@@ -125,5 +128,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/user', [SettingsController::class, 'updateUser'])->name('user.update');
         Route::put('/billing', [SettingsController::class, 'updateBilling'])->name('billing.update');
         Route::put('/password', [SettingsController::class, 'updatePassword'])->name('password.update');
+        Route::put('/category-labels', [SettingsController::class, 'updateCategoryLabels'])->name('category-labels.update');
+        Route::put('/tax-system', [SettingsController::class, 'updateTaxSystem'])->name('tax-system.update');
     });
 });

@@ -37,10 +37,10 @@
                             @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SKU *</label>
-                            <input type="text" name="sku" value="{{ old('sku', $product->sku ?? '') }}" required
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SKU</label>
+                            <input type="text" name="sku" value="{{ old('sku', $product->sku ?? '') }}"
                                    class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                   placeholder="Product SKU">
+                                   placeholder="Leave empty to auto-generate">
                             @error('sku')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror

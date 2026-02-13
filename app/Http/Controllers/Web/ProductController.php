@@ -67,7 +67,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:100',
+            'sku' => 'nullable|string|max:100',
             'barcode' => 'nullable|string|max:100',
             'description' => 'nullable|string',
             'category_id' => 'nullable|exists:product_categories,id',
@@ -86,6 +86,11 @@ class ProductController extends Controller
         $validated['min_stock_level'] = $validated['min_stock_level'] ?? 10;
         $validated['tax_rate'] = $validated['tax_rate'] ?? 0;
         $validated['is_active'] = $request->has('is_active');
+
+        // Auto-generate SKU if empty
+        if (empty($validated['sku'])) {
+            $validated['sku'] = $this->generateSku($validated['name'], $validated['company_id']);
+        }
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
@@ -142,7 +147,7 @@ class ProductController extends Controller
         
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:100',
+            'sku' => 'nullable|string|max:100',
             'barcode' => 'nullable|string|max:100',
             'description' => 'nullable|string',
             'category_id' => 'nullable|exists:product_categories,id',
@@ -157,6 +162,11 @@ class ProductController extends Controller
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+
+        // Auto-generate SKU if empty
+        if (empty($validated['sku'])) {
+            $validated['sku'] = $this->generateSku($validated['name'], $product->company_id);
+        }
 
         if ($request->hasFile('image')) {
             if ($product->image) {
@@ -190,5 +200,36 @@ class ProductController extends Controller
         if ($product->company_id !== auth()->user()->company_id) {
             abort(403);
         }
+    }
+
+    /**
+     * Auto-generate a unique SKU from the product name.
+     */
+    protected function generateSku(string $name, int $companyId): string
+    {
+        // Take first 3 letters of each word (max 2 words), uppercase
+        $words = array_filter(explode(' ', preg_replace('/[^a-zA-Z0-9\s]/', '', $name)));
+        $prefix = '';
+        foreach (array_slice($words, 0, 2) as $word) {
+            $prefix .= strtoupper(substr($word, 0, 3));
+        }
+        if (empty($prefix)) {
+            $prefix = 'PRD';
+        }
+
+        // Find the next sequence number for this prefix
+        $lastProduct = Product::where('company_id', $companyId)
+            ->where('sku', 'like', $prefix . '-%')
+            ->orderByRaw('CAST(SUBSTRING(sku, ' . (strlen($prefix) + 2) . ') AS UNSIGNED) DESC')
+            ->first();
+
+        if ($lastProduct) {
+            $lastNum = (int) substr($lastProduct->sku, strlen($prefix) + 1);
+            $nextNum = $lastNum + 1;
+        } else {
+            $nextNum = 1;
+        }
+
+        return $prefix . '-' . str_pad($nextNum, 4, '0', STR_PAD_LEFT);
     }
 }

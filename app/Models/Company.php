@@ -18,6 +18,13 @@ class Company extends Model
         'panNumber',
         'vatNumber',
         'logo',
+        'settings',
+        'category_level_labels',
+    ];
+
+    protected $casts = [
+        'settings' => 'array',
+        'category_level_labels' => 'array',
     ];
 
     public function user()
