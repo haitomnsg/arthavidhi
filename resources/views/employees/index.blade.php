@@ -109,7 +109,7 @@
             <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center space-x-4">
                     @if($employee->photo)
-                    <img src="{{ asset('storage/' . $employee->photo) }}" alt="{{ $employee->name }}" 
+                    <img src="{{ \Storage::url($employee->photo) }}" alt="{{ $employee->name }}" 
                          class="w-14 h-14 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
                     @else
                     <div class="w-14 h-14 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-xl font-bold">

@@ -57,7 +57,7 @@
                     <div class="flex items-center space-x-6">
                         <div class="shrink-0">
                             @if($company->logo ?? false)
-                            <img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="w-20 h-20 rounded-xl object-cover">
+                            <img src="{{ \Storage::url($company->logo) }}" alt="Logo" class="w-20 h-20 rounded-xl object-cover">
                             @else
                             <div class="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
                                 <i class="fas fa-building text-primary-500 text-2xl"></i>
@@ -251,7 +251,7 @@
                     @endphp
 
                     <div class="space-y-3">
-                        @for($i = 0; $i < 5; $i++)
+                        @for($i = 0; $i < $categoryLevelCount; $i++)
                         <div class="flex items-center gap-4">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300 w-20 flex-shrink-0">Level {{ $i }}</span>
                             <input type="text" name="level_labels[{{ $i }}]" value="{{ old('level_labels.' . $i, $levelLabels[$i] ?? '') }}"

@@ -145,7 +145,7 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-3">
                                 @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-10 h-10 rounded-lg object-cover">
+                                <img src="{{ \Storage::url($product->image) }}" alt="{{ $product->name }}" class="w-10 h-10 rounded-lg object-cover">
                                 @else
                                 <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                                     <i class="fas fa-box text-gray-400"></i>

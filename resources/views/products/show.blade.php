@@ -35,7 +35,7 @@
                     <!-- Product Image -->
                     <div class="flex-shrink-0">
                         @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                        <img src="{{ \Storage::url($product->image) }}" alt="{{ $product->name }}" 
                              class="w-48 h-48 object-cover rounded-xl">
                         @else
                         <div class="w-48 h-48 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
@@ -56,7 +56,9 @@
                         </div>
                         
                         @if($product->description)
-                        <p class="text-gray-600 dark:text-gray-400">{{ $product->description }}</p>
+                        <div class="product-description text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            {!! $product->description !!}
+                        </div>
                         @endif
                         
                         <div class="grid grid-cols-2 gap-4">
@@ -253,4 +255,60 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    .product-description h1 { font-size: 1.5em; font-weight: 700; margin: 0.5em 0; }
+    .product-description h2 { font-size: 1.25em; font-weight: 600; margin: 0.5em 0; }
+    .product-description h3 { font-size: 1.1em; font-weight: 600; margin: 0.5em 0; }
+    .product-description p { margin: 0.4em 0; }
+    .product-description ul { list-style: disc; padding-left: 1.5em; margin: 0.4em 0; }
+    .product-description ol { list-style: decimal; padding-left: 1.5em; margin: 0.4em 0; }
+    .product-description li { margin: 0.2em 0; }
+    .product-description blockquote {
+        border-left: 3px solid #d1d5db;
+        padding-left: 1em;
+        margin: 0.5em 0;
+        color: #6b7280;
+        font-style: italic;
+    }
+    .dark .product-description blockquote { border-color: #4b5563; color: #9ca3af; }
+    .product-description strong { font-weight: 700; }
+    .product-description em { font-style: italic; }
+    .product-description a { color: #3b82f6; text-decoration: underline; }
+    .product-description u { text-decoration: underline; }
+    .product-description s { text-decoration: line-through; }
+
+    /* Table styles for rich text descriptions */
+    .product-description table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0.75em 0;
+        font-size: 0.9em;
+    }
+    .product-description table th,
+    .product-description table td {
+        border: 1px solid #d1d5db;
+        padding: 0.5em 0.75em;
+        text-align: left;
+    }
+    .product-description table th {
+        background-color: #f3f4f6;
+        font-weight: 600;
+    }
+    .product-description table tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+    .dark .product-description table th,
+    .dark .product-description table td {
+        border-color: #4b5563;
+    }
+    .dark .product-description table th {
+        background-color: #374151;
+    }
+    .dark .product-description table tr:nth-child(even) {
+        background-color: #1f2937;
+    }
+</style>
+@endpush
 @endsection

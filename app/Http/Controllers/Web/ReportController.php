@@ -1559,4 +1559,104 @@ class ReportController extends Controller
         $pdf->setPaper('A4', 'landscape');
         return $pdf->download('employee-report-' . $month->format('Y-m') . '.pdf');
     }
+
+    public function employeesExcel(Request $request)
+    {
+        $companyId = auth()->user()->company_id;
+        $company = auth()->user()->company;
+        $month = $request->month ? Carbon::parse($request->month . '-01') : Carbon::now();
+        $monthStart = $month->copy()->startOfMonth();
+        $monthEnd = $month->copy()->endOfMonth();
+
+        $query = Employee::where('company_id', $companyId)->with(['departmentModel', 'shift']);
+
+        if ($request->department_id) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        if ($request->status) {
+            $query->where('is_active', $request->status === 'active');
+        }
+
+        $employees = $query->get();
+
+        // Get attendance data
+        $attendanceCounts = Attendance::whereHas('employee', function ($q) use ($companyId) {
+                $q->where('company_id', $companyId);
+            })
+            ->whereBetween('date', [$monthStart, $monthEnd])
+            ->select(
+                'employee_id',
+                DB::raw("SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present_days"),
+                DB::raw("SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) as absent_days"),
+                DB::raw("SUM(CASE WHEN status = 'leave' THEN 1 ELSE 0 END) as leave_days")
+            )
+            ->groupBy('employee_id')
+            ->get()
+            ->keyBy('employee_id');
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Employee Report');
+
+        // Header
+        $sheet->setCellValue('A1', $company->name ?? 'ArthaVidhi');
+        $sheet->setCellValue('A2', 'Employee Report');
+        $sheet->setCellValue('A3', 'Month: ' . $month->format('F Y'));
+        $sheet->mergeCells('A1:J1');
+        $sheet->mergeCells('A2:J2');
+        $sheet->mergeCells('A3:J3');
+        $this->styleExcelHeader($sheet, 'A1:J3');
+
+        // Summary Row
+        $sheet->setCellValue('A5', 'Total Employees');
+        $sheet->setCellValue('B5', $employees->count());
+        $sheet->setCellValue('C5', 'Active');
+        $sheet->setCellValue('D5', $employees->where('is_active', true)->count());
+        $sheet->setCellValue('E5', 'Total Monthly Salary');
+        $sheet->setCellValue('F5', $employees->where('is_active', true)->sum('salary'));
+        $sheet->getStyle('A5:F5')->getFont()->setBold(true);
+        $sheet->getStyle('F5')->getNumberFormat()->setFormatCode('#,##0.00');
+
+        // Table Headers
+        $headers = ['Employee Name', 'Employee ID', 'Department', 'Position', 'Phone', 'Email', 'Salary', 'Status', 'Present Days', 'Absent Days', 'Leave Days', 'Join Date'];
+        $col = 'A';
+        foreach ($headers as $header) {
+            $sheet->setCellValue($col . '7', $header);
+            $col++;
+        }
+        $this->styleExcelTableHeader($sheet, 'A7:L7');
+
+        // Data Rows
+        $row = 8;
+        foreach ($employees as $employee) {
+            $att = $attendanceCounts->get($employee->id);
+            $sheet->setCellValue('A' . $row, $employee->name);
+            $sheet->setCellValue('B' . $row, $employee->employee_id ?? '');
+            $sheet->setCellValue('C' . $row, $employee->departmentModel->name ?? 'N/A');
+            $sheet->setCellValue('D' . $row, $employee->position ?? $employee->designation ?? 'N/A');
+            $sheet->setCellValue('E' . $row, $employee->phone ?? '');
+            $sheet->setCellValue('F' . $row, $employee->email ?? '');
+            $sheet->setCellValue('G' . $row, $employee->salary);
+            $sheet->setCellValue('H' . $row, $employee->is_active ? 'Active' : 'Inactive');
+            $sheet->setCellValue('I' . $row, $att ? $att->present_days : 0);
+            $sheet->setCellValue('J' . $row, $att ? $att->absent_days : 0);
+            $sheet->setCellValue('K' . $row, $att ? $att->leave_days : 0);
+            $sheet->setCellValue('L' . $row, $employee->joining_date ? $employee->joining_date->format('Y-m-d') : 'N/A');
+            $row++;
+        }
+
+        // Total Row
+        $sheet->setCellValue('A' . $row, 'TOTAL');
+        $sheet->setCellValue('G' . $row, $employees->sum('salary'));
+        $sheet->setCellValue('I' . $row, $attendanceCounts->sum('present_days'));
+        $sheet->setCellValue('J' . $row, $attendanceCounts->sum('absent_days'));
+        $sheet->setCellValue('K' . $row, $attendanceCounts->sum('leave_days'));
+        $sheet->getStyle('A' . $row . ':L' . $row)->getFont()->setBold(true);
+
+        $this->autoSizeColumns($sheet, 'A', 'L');
+        $sheet->getStyle('G8:G' . $row)->getNumberFormat()->setFormatCode('#,##0.00');
+
+        return $this->downloadExcel($spreadsheet, 'employee-report-' . $month->format('Y-m'));
+    }
 }

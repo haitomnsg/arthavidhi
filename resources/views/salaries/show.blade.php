@@ -37,7 +37,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
                 <div class="flex items-center space-x-4">
                     @if($salary->employee->photo)
-                    <img src="{{ asset('storage/' . $salary->employee->photo) }}" class="w-16 h-16 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
+                    <img src="{{ \Storage::url($salary->employee->photo) }}" class="w-16 h-16 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
                     @else
                     <div class="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                         {{ strtoupper(substr($salary->employee->name, 0, 1)) }}

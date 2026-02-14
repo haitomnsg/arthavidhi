@@ -12,7 +12,7 @@
             </a>
             <div class="flex items-center space-x-4">
                 @if($employee->photo)
-                <img src="{{ asset('storage/' . $employee->photo) }}" alt="{{ $employee->name }}" class="w-16 h-16 rounded-full object-cover border-2 border-primary-200 dark:border-primary-800">
+                <img src="{{ \Storage::url($employee->photo) }}" alt="{{ $employee->name }}" class="w-16 h-16 rounded-full object-cover border-2 border-primary-200 dark:border-primary-800">
                 @else
                 <div class="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                     {{ strtoupper(substr($employee->name, 0, 1)) }}
@@ -142,19 +142,19 @@
                     @if($employee->citizenship_front)
                     <div>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Citizenship (Front)</p>
-                        <img src="{{ asset('storage/' . $employee->citizenship_front) }}" alt="Citizenship Front" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
+                        <img src="{{ \Storage::url($employee->citizenship_front) }}" alt="Citizenship Front" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
                     </div>
                     @endif
                     @if($employee->citizenship_back)
                     <div>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Citizenship (Back)</p>
-                        <img src="{{ asset('storage/' . $employee->citizenship_back) }}" alt="Citizenship Back" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
+                        <img src="{{ \Storage::url($employee->citizenship_back) }}" alt="Citizenship Back" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
                     </div>
                     @endif
                     @if($employee->pan_card_image)
                     <div>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">PAN Card</p>
-                        <img src="{{ asset('storage/' . $employee->pan_card_image) }}" alt="PAN Card" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
+                        <img src="{{ \Storage::url($employee->pan_card_image) }}" alt="PAN Card" class="w-full h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-600 cursor-pointer" onclick="window.open(this.src)">
                     </div>
                     @endif
                 </div>

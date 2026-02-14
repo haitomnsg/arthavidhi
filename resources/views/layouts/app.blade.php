@@ -207,6 +207,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @stack('styles')
     <style>
         [x-cloak] { display: none !important; }
         .sidebar-link.active { background-color: rgb(254 215 170); color: rgb(194 65 12); }
@@ -516,6 +517,24 @@
                    :class="{ 'active': isTabActive('{{ route('reports.employees') }}') }">
                     <i class="fas fa-user-tie w-5 text-xs"></i>
                     <span>Employee Report</span>
+                </a>
+
+                <div class="pt-4 pb-2">
+                    <p class="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Communication</p>
+                </div>
+                <a href="{{ route('sms.index') }}" 
+                   @click.prevent="openTab('{{ route('sms.index') }}', 'SMS Messages', 'fa-sms')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('sms.index') }}') }">
+                    <i class="fas fa-sms w-5"></i>
+                    <span>SMS Messages</span>
+                </a>
+                <a href="{{ route('crm.index') }}" 
+                   @click.prevent="openTab('{{ route('crm.index') }}', 'CRM', 'fa-handshake')"
+                   class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-600 dark:text-gray-300"
+                   :class="{ 'active': isTabActive('{{ route('crm.index') }}') }">
+                    <i class="fas fa-handshake w-5"></i>
+                    <span>CRM</span>
                 </a>
             </nav>
 

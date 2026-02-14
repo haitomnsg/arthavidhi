@@ -48,5 +48,6 @@ return [
     ],
     'aliases' => [
         'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+        'Storage' => Illuminate\Support\Facades\Storage::class,
     ],
 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,12 @@ class SettingsController extends Controller
         $company = auth()->user()->company;
         $settings = $company->settings ?? (object)[];
         
-        return view('settings.index', compact('company', 'settings'));
+        // Detect the max category level used in the system
+        $maxCategoryLevel = ProductCategory::where('company_id', $company->id)->max('level') ?? 0;
+        // Show levels 0 through maxCategoryLevel (at minimum level 0)
+        $categoryLevelCount = max($maxCategoryLevel + 1, 1);
+        
+        return view('settings.index', compact('company', 'settings', 'categoryLevelCount'));
     }
 
     public function updateCompany(Request $request)

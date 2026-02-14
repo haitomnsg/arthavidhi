@@ -17,6 +17,12 @@ use App\Http\Controllers\Web\ShiftController;
 use App\Http\Controllers\Web\DepartmentController;
 use App\Http\Controllers\Web\IncomeController;
 use App\Http\Controllers\Web\SalaryController;
+use App\Http\Controllers\Web\StorageController;
+use App\Http\Controllers\Web\SmsController;
+use App\Http\Controllers\Web\CrmController;
+
+// Storage file serving route (fallback when symlink doesn't work)
+Route::get('/storage/{path}', [StorageController::class, 'serve'])->where('path', '.*')->name('storage.serve');
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +116,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profit-loss/excel', [ReportController::class, 'profitLossExcel'])->name('profit-loss.excel');
         Route::get('/customers/excel', [ReportController::class, 'customersExcel'])->name('customers.excel');
         Route::get('/tax/excel', [ReportController::class, 'taxExcel'])->name('tax.excel');
+        Route::get('/employees/excel', [ReportController::class, 'employeesExcel'])->name('employees.excel');
         Route::get('/employees/pdf', [ReportController::class, 'employeesPdf'])->name('employees.pdf');
 
         // PDF exports
@@ -130,5 +137,34 @@ Route::middleware('auth')->group(function () {
         Route::put('/password', [SettingsController::class, 'updatePassword'])->name('password.update');
         Route::put('/category-labels', [SettingsController::class, 'updateCategoryLabels'])->name('category-labels.update');
         Route::put('/tax-system', [SettingsController::class, 'updateTaxSystem'])->name('tax-system.update');
+    });
+
+    // SMS
+    Route::prefix('sms')->name('sms.')->group(function () {
+        Route::get('/', [SmsController::class, 'index'])->name('index');
+        Route::get('/compose', [SmsController::class, 'compose'])->name('compose');
+        Route::post('/send', [SmsController::class, 'send'])->name('send');
+        Route::delete('/{smsMessage}', [SmsController::class, 'destroy'])->name('destroy');
+        Route::get('/templates', [SmsController::class, 'templates'])->name('templates');
+        Route::post('/templates', [SmsController::class, 'storeTemplate'])->name('templates.store');
+        Route::delete('/templates/{template}', [SmsController::class, 'destroyTemplate'])->name('templates.destroy');
+    });
+
+    // CRM
+    Route::prefix('crm')->name('crm.')->group(function () {
+        Route::get('/', [CrmController::class, 'index'])->name('index');
+        Route::get('/contacts', [CrmController::class, 'contacts'])->name('contacts');
+        Route::post('/contacts', [CrmController::class, 'storeContact'])->name('contacts.store');
+        Route::put('/contacts/{contact}', [CrmController::class, 'updateContact'])->name('contacts.update');
+        Route::delete('/contacts/{contact}', [CrmController::class, 'destroyContact'])->name('contacts.destroy');
+        Route::get('/deals', [CrmController::class, 'deals'])->name('deals');
+        Route::post('/deals', [CrmController::class, 'storeDeal'])->name('deals.store');
+        Route::put('/deals/{deal}', [CrmController::class, 'updateDeal'])->name('deals.update');
+        Route::delete('/deals/{deal}', [CrmController::class, 'destroyDeal'])->name('deals.destroy');
+        Route::post('/contacts/{contact}/notes', [CrmController::class, 'storeNote'])->name('contacts.notes.store');
+        Route::delete('/notes/{note}', [CrmController::class, 'destroyNote'])->name('notes.destroy');
+        Route::post('/contacts/{contact}/tasks', [CrmController::class, 'storeTask'])->name('contacts.tasks.store');
+        Route::put('/tasks/{task}', [CrmController::class, 'updateTask'])->name('tasks.update');
+        Route::delete('/tasks/{task}', [CrmController::class, 'destroyTask'])->name('tasks.destroy');
     });
 });

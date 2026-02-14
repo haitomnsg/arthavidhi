@@ -91,23 +91,48 @@
                 </div>
             </div>
 
-            <div class="space-y-6">
+            <div class="space-y-6" x-data="receiptUpload()">
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Receipt/Attachment</h3>
-                    @if(isset($income) && $income->receipt)
-                    <div class="mb-4">
-                        <a href="{{ asset('storage/' . $income->receipt) }}" target="_blank" class="text-primary-500 hover:underline">
-                            <i class="fas fa-file mr-2"></i> View Current Receipt
-                        </a>
+                    
+                    <!-- Image Preview -->
+                    <div class="relative mb-4" x-show="receiptPreview || hasExistingReceipt" x-cloak>
+                        <template x-if="isPdf">
+                            <div class="w-full h-48 bg-gray-100 dark:bg-gray-700 rounded-lg flex flex-col items-center justify-center">
+                                <i class="fas fa-file-pdf text-red-500 text-5xl mb-2"></i>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">PDF Receipt</p>
+                                <a :href="receiptPreview || existingReceipt" target="_blank" class="mt-2 text-primary-500 hover:underline text-sm">
+                                    <i class="fas fa-external-link-alt mr-1"></i> Open PDF
+                                </a>
+                            </div>
+                        </template>
+                        <template x-if="!isPdf">
+                            <div>
+                                <img :src="receiptPreview || existingReceipt" alt="Receipt" class="w-full h-48 object-cover rounded-lg cursor-pointer" @click="openFullPreview()">
+                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity rounded-lg">
+                                    <label class="cursor-pointer text-white mr-3">
+                                        <i class="fas fa-camera mr-1"></i> Change
+                                        <input type="file" name="receipt" class="hidden" accept="image/*,.pdf" @change="previewReceipt($event)">
+                                    </label>
+                                    <a :href="receiptPreview || existingReceipt" target="_blank" class="text-white mr-3 hover:text-primary-300">
+                                        <i class="fas fa-expand mr-1"></i> View
+                                    </a>
+                                    <button type="button" @click="removeReceipt()" class="text-white hover:text-red-300">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
                     </div>
-                    @endif
-                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
+
+                    <!-- Upload Area -->
+                    <label x-show="!receiptPreview && !hasExistingReceipt" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
                         <div class="text-center">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Upload receipt</p>
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Click to upload receipt</p>
                             <p class="text-xs text-gray-400">PNG, JPG, PDF up to 5MB</p>
                         </div>
-                        <input type="file" name="receipt" class="hidden" accept="image/*,.pdf">
+                        <input type="file" name="receipt" class="hidden" accept="image/*,.pdf" @change="previewReceipt($event)">
                     </label>
                 </div>
 
@@ -124,4 +149,53 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+function receiptUpload() {
+    return {
+        receiptPreview: null,
+        hasExistingReceipt: {{ isset($income) && $income->receipt ? 'true' : 'false' }},
+        existingReceipt: '{{ isset($income) && $income->receipt ? \Storage::url($income->receipt) : "" }}',
+        isPdf: {{ isset($income) && $income->receipt && str_ends_with($income->receipt, '.pdf') ? 'true' : 'false' }},
+
+        previewReceipt(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    event.target.value = '';
+                    return;
+                }
+                this.isPdf = file.type === 'application/pdf';
+                if (this.isPdf) {
+                    this.receiptPreview = URL.createObjectURL(file);
+                    this.hasExistingReceipt = false;
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.receiptPreview = e.target.result;
+                        this.hasExistingReceipt = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        },
+
+        removeReceipt() {
+            this.receiptPreview = null;
+            this.hasExistingReceipt = false;
+            this.isPdf = false;
+            const fileInputs = document.querySelectorAll('input[name="receipt"]');
+            fileInputs.forEach(input => input.value = '');
+        },
+
+        openFullPreview() {
+            const url = this.receiptPreview || this.existingReceipt;
+            window.open(url, '_blank');
+        }
+    }
+}
+</script>
+@endpush
 @endsection

@@ -100,4 +100,4 @@
 <style>
     [x-cloak] { display: none !important; }
 </style>
-<?php /**PATH D:\billing\resources\views/components/cancel-bill-modal.blade.php ENDPATH**/ ?>
+<?php /**PATH D:\billing\resources\views\components\cancel-bill-modal.blade.php ENDPATH**/ ?>

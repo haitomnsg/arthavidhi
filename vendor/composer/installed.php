@@ -3,7 +3,7 @@
         'name' => 'arthavidhi/billing',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '733263632c595aba88da3af9acd3b192e08b09ec',
+        'reference' => 'cbcc71d5d30636994e3f8dc1408ccf9c34abe4c7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'arthavidhi/billing' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '733263632c595aba88da3af9acd3b192e08b09ec',
+            'reference' => 'cbcc71d5d30636994e3f8dc1408ccf9c34abe4c7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

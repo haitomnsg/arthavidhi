@@ -98,7 +98,7 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-3">
                                 @if($advance->employee->photo)
-                                <img src="{{ asset('storage/' . $advance->employee->photo) }}" class="w-8 h-8 rounded-full object-cover">
+                                <img src="{{ \Storage::url($advance->employee->photo) }}" class="w-8 h-8 rounded-full object-cover">
                                 @else
                                 <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center text-primary-600 text-xs font-bold">
                                     {{ strtoupper(substr($advance->employee->name, 0, 1)) }}

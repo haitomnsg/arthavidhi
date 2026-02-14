@@ -23,6 +23,10 @@
                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
                 <i class="fas fa-file-pdf mr-2"></i> PDF
             </a>
+            <a href="{{ route('reports.employees.excel', ['department_id' => request('department_id'), 'status' => request('status'), 'month' => request('month')]) }}" 
+               class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                <i class="fas fa-file-excel mr-2"></i> Excel
+            </a>
         </div>
     </div>
 

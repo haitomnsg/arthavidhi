@@ -77,9 +77,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
-                            <textarea name="description" rows="3"
-                                      class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                      placeholder="Product description">{{ old('description', $product->description ?? '') }}</textarea>
+                            <textarea name="description" id="description-editor">{!! old('description', $product->description ?? '') !!}</textarea>
                         </div>
                     </div>
                 </div>
@@ -196,13 +194,112 @@
     </form>
 </div>
 
+@push('styles')
+<style>
+    /* CKEditor wrapper styling */
+    .ck-editor-wrapper {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    .ck.ck-editor__main>.ck-editor__editable {
+        min-height: 250px;
+    }
+    /* Dark mode overrides */
+    .dark .ck-editor-wrapper {
+        border-color: #4b5563;
+    }
+    .dark .ck.ck-toolbar {
+        background: #1f2937 !important;
+        border-color: #4b5563 !important;
+    }
+    .dark .ck.ck-toolbar .ck-button {
+        color: #d1d5db !important;
+    }
+    .dark .ck.ck-toolbar .ck-button:hover {
+        background: #374151 !important;
+    }
+    .dark .ck.ck-editor__main>.ck-editor__editable {
+        background: #374151 !important;
+        color: #e5e7eb !important;
+        border-color: #4b5563 !important;
+    }
+    .dark .ck.ck-editor__editable.ck-focused {
+        border-color: #f97316 !important;
+    }
+    .dark .ck.ck-list__item .ck-button.ck-on {
+        background: #4b5563 !important;
+        color: #e5e7eb !important;
+    }
+    .dark .ck.ck-dropdown__panel {
+        background: #1f2937 !important;
+        border-color: #4b5563 !important;
+    }
+    .dark .ck.ck-list__item .ck-button:hover:not(.ck-disabled) {
+        background: #374151 !important;
+    }
+    .dark .ck.ck-input {
+        background: #374151 !important;
+        color: #e5e7eb !important;
+        border-color: #4b5563 !important;
+    }
+    .dark .ck.ck-labeled-field-view>.ck-labeled-field-view__input-wrapper>.ck-label {
+        color: #9ca3af !important;
+    }
+    .dark .ck.ck-balloon-panel {
+        background: #1f2937 !important;
+        border-color: #4b5563 !important;
+    }
+    .dark .ck.ck-button.ck-on {
+        background: #374151 !important;
+        color: #f97316 !important;
+    }
+</style>
+@endpush
+
 @push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    ClassicEditor
+        .create(document.querySelector('#description-editor'), {
+            placeholder: 'Write a detailed product description...',
+            toolbar: {
+                items: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'outdent', 'indent', '|',
+                    'insertTable', '|',
+                    'blockQuote', 'link', '|',
+                    'undo', 'redo'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn', 'tableRow', 'mergeTableCells',
+                    'tableProperties', 'tableCellProperties'
+                ]
+            },
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+                ]
+            }
+        })
+        .catch(error => {
+            console.error('CKEditor init error:', error);
+        });
+});
+
 function imageUpload() {
     return {
         imagePreview: null,
         hasExistingImage: {{ isset($product) && $product->image ? 'true' : 'false' }},
-        existingImage: '{{ isset($product) && $product->image ? asset("storage/" . $product->image) : "" }}',
+        existingImage: '{{ isset($product) && $product->image ? \Storage::url($product->image) : "" }}',
         
         previewImage(event) {
             const file = event.target.files[0];
@@ -224,7 +321,6 @@ function imageUpload() {
         removeImage() {
             this.imagePreview = null;
             this.hasExistingImage = false;
-            // Clear file input
             const fileInputs = document.querySelectorAll('input[name="image"]');
             fileInputs.forEach(input => input.value = '');
         }

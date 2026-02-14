@@ -164,7 +164,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Employee Photo</label>
                             @if(isset($employee) && $employee->photo)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $employee->photo) }}" alt="Employee Photo" class="w-24 h-24 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                                <img src="{{ \Storage::url($employee->photo) }}" alt="Employee Photo" class="w-24 h-24 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
                             </div>
                             @endif
                             <input type="file" name="photo" accept="image/*"
@@ -177,7 +177,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Citizenship Card (Front)</label>
                             @if(isset($employee) && $employee->citizenship_front)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $employee->citizenship_front) }}" alt="Citizenship Front" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                                <img src="{{ \Storage::url($employee->citizenship_front) }}" alt="Citizenship Front" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
                             </div>
                             @endif
                             <input type="file" name="citizenship_front" accept="image/*"
@@ -189,7 +189,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Citizenship Card (Back)</label>
                             @if(isset($employee) && $employee->citizenship_back)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $employee->citizenship_back) }}" alt="Citizenship Back" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                                <img src="{{ \Storage::url($employee->citizenship_back) }}" alt="Citizenship Back" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
                             </div>
                             @endif
                             <input type="file" name="citizenship_back" accept="image/*"
@@ -201,7 +201,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">PAN Card Image</label>
                             @if(isset($employee) && $employee->pan_card_image)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $employee->pan_card_image) }}" alt="PAN Card" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
+                                <img src="{{ \Storage::url($employee->pan_card_image) }}" alt="PAN Card" class="w-32 h-20 rounded-lg object-cover border border-gray-200 dark:border-gray-600">
                             </div>
                             @endif
                             <input type="file" name="pan_card_image" accept="image/*"
@@ -215,7 +215,7 @@
                 <!-- Employee Photo Preview -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
                     @if(isset($employee) && $employee->photo)
-                    <img src="{{ asset('storage/' . $employee->photo) }}" alt="{{ $employee->name }}" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-primary-100 dark:border-primary-900/30">
+                    <img src="{{ \Storage::url($employee->photo) }}" alt="{{ $employee->name }}" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-primary-100 dark:border-primary-900/30">
                     @else
                     <div class="w-32 h-32 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 mx-auto flex items-center justify-center text-white text-4xl font-bold">
                         {{ strtoupper(substr(old('name', $employee->name ?? 'E'), 0, 1)) }}
